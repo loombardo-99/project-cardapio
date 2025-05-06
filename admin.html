@@ -160,84 +160,147 @@
             transform: scale(1.1);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
+        @media (max-width: 768px) {
+            header {
+            font-size: 1.5rem;
+            padding: 15px 0;
+            }
+
+            header img {
+            max-width: 40px;
+            }
+
+            .menu-category {
+            width: 100%;
+            margin: 10px 0;
+            }
+
+            .menu-item img {
+            max-width: 70px;
+            margin-right: 10px;
+            }
+
+            .menu-item-info span {
+            font-size: 1rem;
+            }
+
+            .menu-item-info p {
+            font-size: 0.9rem;
+            }
+
+            button {
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            }
+
+            .cart {
+            padding: 15px;
+            max-width: 100%;
+            }
+
+            .cart h2 {
+            font-size: 1.5rem;
+            }
+
+            .sponsors img {
+            max-width: 80px;
+            margin: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+            font-size: 1.2rem;
+            }
+
+            .menu-item img {
+            max-width: 50px;
+            }
+
+            .menu-item-info span {
+            font-size: 0.9rem;
+            }
+
+            .menu-item-info p {
+            font-size: 0.8rem;
+            }
+
+            button {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            }
+
+            .sponsors img {
+            max-width: 60px;
+            margin: 5px;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <img src="midia/prato-2.jpg" alt="Logo da Padaria">
-        Cardápio da Padaria
-    </header>
-    <div class="menu">
-        <div class="menu-category">
-            <h2>Pães</h2>
-            <div class="menu-item">
-                <img src="midia/pao-1.jpg" alt="Pão Francês">
-                <div class="menu-item-info">
-                    <span>Pão Francês</span>
-                    <p>Delicioso pão crocante e fresquinho.</p>
-                    <p>R$ 1,50</p>
-                </div>
-                <button onclick="addToCart('Pão Francês', 1.50)">Adicionar</button>
-            </div>
-            <div class="menu-item">
-                <img src="midia/pao-queijo.jpg" alt="Pão de Queijo">
-                <div class="menu-item-info">
-                    <span>Pão de Queijo</span>
-                    <p>Tradicional pão de queijo mineiro.</p>
-                    <p>R$ 2,00</p>
-                </div>
-                <button onclick="addToCart('Pão de Queijo', 2.00)">Adicionar</button>
-            </div>
+        Pedidos da Padaria
+        </header>
+        <div class="menu">
+        <div id="orders-container">
+            <!-- Os pedidos feitos no cardápio serão exibidos aqui -->
         </div>
-        <div class="menu-category">
-            <h2>Bolos</h2>
-            <div class="menu-item">
-                <img src="midia/" alt="Bolo de Cenoura">
-                <div class="menu-item-info">
-                    <span>Bolo de Cenoura</span>
-                    <p>Bolo fofinho com cobertura de chocolate.</p>
-                    <p>R$ 15,00</p>
-                </div>
-                <button onclick="addToCart('Bolo de Cenoura', 15.00)">Adicionar</button>
-            </div>
-            <div class="menu-item">
-                <img src="midia/bolo-chocolate.jpg" alt="Bolo de Chocolate">
-                <div class="menu-item-info">
-                    <span>Bolo de Chocolate</span>
-                    <p>Feito com o melhor chocolate artesanal.</p>
-                    <p>R$ 18,00</p>
-                </div>
-                <button onclick="addToCart('Bolo de Chocolate', 18.00)">Adicionar</button>
-            </div>
         </div>
-        <div class="menu-category">
-            <h2>Bebidas</h2>
-            <div class="menu-item">
-                <img src="midia/cafe-3.jpg" alt="Café">
+        <script>
+                // Simulação de comunicação com o arquivo index.html
+        // Aqui você pode usar localStorage, sessionStorage ou uma API para comunicação real
+        function fetchOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const ordersContainer = document.getElementById('orders-container');
+            ordersContainer.innerHTML = '';
+
+            if (orders.length === 0) {
+            ordersContainer.innerHTML = '<p>Nenhum pedido foi feito ainda.</p>';
+            return;
+            }
+
+            orders.forEach((order, orderIndex) => {
+            const orderElement = document.createElement('div');
+            orderElement.className = 'menu-category';
+            orderElement.innerHTML = `
+                <h2>Mesa: ${order.table}</h2>
+                ${order.items.map(item => `
+                <div class="menu-item">
+                <img src="${item.image}" alt="${item.name}">
                 <div class="menu-item-info">
-                    <span>Café</span>
-                    <p>Café quentinho e aromático.</p>
-                    <p>R$ 3,00</p>
+                <span>${item.name}</span>
+                <p>${item.description}</p>
+                <p>R$ ${item.price.toFixed(2)}</p>
                 </div>
-                <button onclick="addToCart('Café', 3.00)">Adicionar</button>
-            </div>
-            <div class="menu-item">
-                <img src="midia/suco-laranja.jpg" alt="Suco de Laranja">
-                <div class="menu-item-info">
-                    <span>Suco de Laranja</span>
-                    <p>Suco natural feito na hora.</p>
-                    <p>R$ 5,00</p>
                 </div>
-                <button onclick="addToCart('Suco de Laranja', 5.00)">Adicionar</button>
-            </div>
-        </div>
-    </div>
-    <div class="cart">
-        <h2>Carrinho</h2>
-        <div id="cart-items"></div>
-        <p id="cart-total">Total: R$ 0,00</p>
-        <button id="checkout-button" style="display: none;" onclick="checkout()">Finalizar Compra</button>
-    </div>
+                `).join('')}
+                <div>
+                <label for="status-${orderIndex}">Status:</label>
+                <select id="status-${orderIndex}" onchange="updateOrderStatus(${orderIndex}, this.value)">
+                    <option value="Pendente" ${order.status === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                    <option value="Preparando" ${order.status === 'Preparando' ? 'selected' : ''}>Preparando</option>
+                    <option value="Concluído" ${order.status === 'Concluído' ? 'selected' : ''}>Concluído</option>
+                </select>
+                </div>
+            `;
+            ordersContainer.appendChild(orderElement);
+            });
+        }
+
+        function updateOrderStatus(orderIndex, newStatus) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            if (orders[orderIndex]) {
+            orders[orderIndex].status = newStatus;
+            localStorage.setItem('orders', JSON.stringify(orders));
+            fetchOrders(); // Atualiza a exibição dos pedidos
+            }
+        }
+
+        // Chama a função para carregar os pedidos ao abrir a página
+        fetchOrders();
+        </script>
     <div class="sponsors">
         <h2>Patrocinadores</h2>
         <img src="sponsor1.png" alt="Patrocinador 1">
