@@ -76,17 +76,15 @@
         <img src="midia/aguia-logo.jpg" alt="Logo da Padaria">
     </div>
     <div class="menu-buttons">
-        <button onclick="navigateTo('cafe-da-manha')">Café da Manhã</button>
-        <button onclick="navigateTo('almoco')">Almoço</button>
-        <button onclick="navigateTo('porcoes')">Porções</button>
-        <button onclick="navigateTo('bebidas')">Bebidas</button>
-        <button onclick="navigateTo('.menu-item-2')">Sobremesas</button>
+        <button onclick="navigateTo('cardapio.html#menu-cafe')">Café da Manhã</button>
+        <button onclick="navigateTo('cardapio.html#menu-almoco')">Almoço</button>
+        <button onclick="navigateTo('cardapio.html#menu-doces&sobremesas')">Sobremesas</button>
+        <button onclick="navigateTo('cardapio.html#baguete&lanches')">Lanches</button>
     </div>
 
     <script>
-
         function navigateTo(section) {
-            window.location.href = `cardapio.html#${section}`;
+            window.location.href = section;
         }
     </script>
 </body>
