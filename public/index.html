@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crie seu Cardápio Online - CardapioFacil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background-color: #F3F4F6; /* Light gray background for hero */
+        }
+        .cta-button {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .step-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 2rem; /* p-8 */
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+        .step-icon-wrapper {
+            background-image: linear-gradient(to right, #8B5CF6, #EC4899); /* Roxo para Rosa */
+            color: white;
+            width: 4rem; /* w-16 */
+            height: 4rem; /* h-16 */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto; /* mx-auto mb-6 */
+            font-size: 1.875rem; /* text-3xl */
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">CardápioFácil</a>
+            <nav class="space-x-4">
+                <a href="#recursos" class="text-gray-600 hover:text-indigo-600">Recursos</a>
+                <a href="#passos" class="text-gray-600 hover:text-indigo-600">Como Funciona</a>
+                <a href="#planos" class="text-gray-600 hover:text-indigo-600">Planos</a>
+                <a href="#depoimentos" class="text-gray-600 hover:text-indigo-600">Depoimentos</a>
+                <a href="login-cadastro.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg cta-button">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-bg py-20 md:py-32">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+                Crie um Cardápio Online <span class="text-indigo-600">Incrível</span> em Minutos
+            </h1>
+            <p class="text-lg md:text-xl text-gray-700 mb-10 max-w-2xl mx-auto">
+                Sem necessidade de conhecimentos técnicos. Responda a algumas perguntas e tenha um cardápio pronto para encantar seus clientes e aumentar suas vendas!
+            </p>
+            <button id="cta-iniciar-quiz" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-lg text-xl shadow-lg cta-button">
+                CRIAR MEU CARDÁPIO AGORA
+            </button>
+        </div>
+    </section>
+
+    <section id="recursos" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">Transforme seu Negócio</h2>
+            <p class="text-center text-gray-600 mb-12 md:mb-16 text-lg">Descubra os recursos que farão seu cardápio se destacar.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-gray-50 p-8 rounded-xl shadow-lg feature-card text-center">
+                    <div class="flex justify-center mb-4">
+                        <svg class="w-16 h-16 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Layouts Personalizáveis</h3>
+                    <p class="text-gray-600">Escolha entre diversos modelos e adapte ao estilo do seu negócio.</p>
+                </div>
+                <div class="bg-gray-50 p-8 rounded-xl shadow-lg feature-card text-center">
+                     <div class="flex justify-center mb-4">
+                        <svg class="w-16 h-16 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 00-15.357-2m15.357 2H15"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Atualizações Ilimitadas</h3>
+                    <p class="text-gray-600">Modifique preços, pratos e promoções quando quiser, sem complicações.</p>
+                </div>
+                <div class="bg-gray-50 p-8 rounded-xl shadow-lg feature-card text-center">
+                    <div class="flex justify-center mb-4">
+                        <svg class="w-16 h-16 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6.598 5.7A2 2 0 0014 18v-2.772a2 2 0 00-1.402-1.918L12 13l-.598.31A2 2 0 0010 15.228V18a2 2 0 002.598 1.7l.004-.002zM12 4c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zM6 20h12M3 11h2m14 0h2"></path></svg> </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">QR Code Exclusivo</h3>
+                    <p class="text-gray-600">Gere um QR Code para seus clientes acessarem o cardápio facilmente.</p>
+                </div>
+                 <div class="bg-gray-50 p-8 rounded-xl shadow-lg feature-card text-center">
+                    <div class="flex justify-center mb-4">
+                        <svg class="w-16 h-16 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Integração Social</h3>
+                    <p class="text-gray-600">Compartilhe seu cardápio diretamente nas suas redes sociais.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="passos" class="py-16 md:py-24 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">Crie seu Cardápio em 3 Passos Simples</h2>
+            <p class="text-center text-gray-600 mb-12 md:mb-16 text-lg max-w-2xl mx-auto">Transformar a experiência dos seus clientes nunca foi tão fácil. Siga nosso guia rápido e veja a mágica acontecer!</p>
+            <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+                <div class="step-card">
+                    <div class="step-icon-wrapper">
+                        <i class="fas fa-pencil-ruler"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">1. Responda ao Quiz</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Conte-nos sobre seu negócio. Suas respostas nos ajudam a sugerir os melhores layouts e funcionalidades para você.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon-wrapper">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">2. Escolha e Personalize</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Selecione um dos nossos layouts modernos e personalize cores, fontes e imagens para combinar com sua marca.</p>
+                </div>
+                <div class="step-card">
+                     <div class="step-icon-wrapper">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">3. Adicione Produtos e Publique</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Insira seus pratos, bebidas e promoções. Com um clique, seu cardápio estará online, pronto para impressionar!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="depoimentos" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">O que Nossos Clientes Dizem</h2>
+            <p class="text-center text-gray-600 mb-12 md:mb-16 text-lg">Histórias de sucesso de quem já usa CardápioFácil.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-8 rounded-xl shadow-lg">
+                    <p class="text-gray-700 mb-4">"Desde que comecei a usar o CardápioFácil, minhas vendas aumentaram e os clientes elogiam a facilidade de ver os pratos. Recomendo!"</p>
+                    <p class="font-semibold text-gray-900">- João Silva, Dono da Pizzaria Delícia</p>
+                </div>
+                <div class="bg-gray-50 p-8 rounded-xl shadow-lg">
+                    <p class="text-gray-700 mb-4">"A plataforma é super intuitiva! Consegui criar meu cardápio em menos de uma hora e o resultado ficou muito profissional."</p>
+                    <p class="font-semibold text-gray-900">- Maria Oliveira, Café Aconchego</p>
+                </div>
+                <div class="bg-gray-50 p-8 rounded-xl shadow-lg md:col-span-2 lg:col-span-1">
+                    <p class="text-gray-700 mb-4">"O recurso de QR Code é fantástico. Facilitou muito o acesso dos clientes ao cardápio, especialmente em tempos de distanciamento."</p>
+                    <p class="font-semibold text-gray-900">- Carlos Pereira, Bar do Carlão</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="planos" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Planos Flexíveis para seu Negócio</h2>
+            <p class="text-gray-700 mb-12 md:mb-16 max-w-xl mx-auto text-lg">Escolha o plano ideal e comece a transformar a experiência dos seus clientes hoje mesmo.</p>
+            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="border bg-white border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                    <h3 class="text-2xl font-semibold text-indigo-600 mb-3">Básico</h3>
+                    <p class="text-4xl font-bold text-gray-900 mb-2">R$29<span class="text-xl font-normal text-gray-500">/mês</span></p>
+                    <ul class="text-gray-600 space-y-2 my-6 text-left">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Até 50 itens</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>1 Layout Padrão</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>QR Code</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Suporte por Email</li>
+                    </ul>
+                    <button class="w-full bg-gray-200 hover:bg-gray-300 text-indigo-700 font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+                        Começar com Básico
+                    </button>
+                </div>
+                <div class="border-2 bg-white border-indigo-600 rounded-xl p-8 shadow-xl hover:shadow-2xl transition-shadow duration-300 relative">
+                    <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full">MAIS POPULAR</span>
+                    <h3 class="text-2xl font-semibold text-indigo-600 mb-3">Profissional</h3>
+                    <p class="text-4xl font-bold text-gray-900 mb-2">R$59<span class="text-xl font-normal text-gray-500">/mês</span></p>
+                    <ul class="text-gray-600 space-y-2 my-6 text-left">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Itens Ilimitados</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Layouts Premium</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>QR Code Personalizável</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Atualizações em Tempo Real</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Suporte Prioritário</li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg cta-button">
+                        Escolher Profissional
+                    </button>
+                </div>
+                <div class="border bg-white border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                    <h3 class="text-2xl font-semibold text-indigo-600 mb-3">Premium</h3>
+                    <p class="text-4xl font-bold text-gray-900 mb-2">R$99<span class="text-xl font-normal text-gray-500">/mês</span></p>
+                    <ul class="text-gray-600 space-y-2 my-6 text-left">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Tudo do Profissional</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Integrações (ex: iFood)</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Análises e Relatórios</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Domínio Personalizado</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Suporte Dedicado</li>
+                    </ul>
+                     <button class="w-full bg-gray-200 hover:bg-gray-300 text-indigo-700 font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+                        Explorar Premium
+                    </button>
+                </div>
+            </div>
+            <p class="mt-10 text-gray-600">Precisa de algo diferente? <a href="#" class="text-indigo-600 hover:underline">Entre em contato</a> para soluções personalizadas.</p>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-gray-300 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <a href="index.html" class="text-xl font-bold text-white mb-4 inline-block">CardápioFácil</a>
+            <div class="space-x-6 mb-4">
+                <a href="#" class="hover:text-indigo-400">Sobre Nós</a>
+                <a href="#" class="hover:text-indigo-400">Termos de Serviço</a>
+                <a href="#" class="hover:text-indigo-400">Política de Privacidade</a>
+                <a href="#" class="hover:text-indigo-400">Contato</a>
+            </div>
+            <div class="flex justify-center space-x-4 mb-4">
+                <a href="#" class="hover:text-indigo-400" aria-label="Facebook">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                </a>
+                <a href="#" class="hover:text-indigo-400" aria-label="Twitter">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                </a>
+                <a href="#" class="hover:text-indigo-400" aria-label="Instagram">
+                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.023.047 1.351.058 3.807.058h.468c2.456 0 2.784-.011 3.807-.058.975-.045 1.504-.207 1.857-.344.467-.182-.8.398 1.15-.748.35-.35.566-.683.748-1.15.137.353.3-.882.344-1.857.047-1.023.058-1.351.058-3.807v-.468c0-2.456-.011-2.784-.058-3.807-.045-.975-.207-1.504-.344-1.857a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg>
+                </a>
+            </div>
+            <p class="text-sm">&copy; <span id="currentYear"></span> CardápioFácil. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Logic for CTA button (redirect to quiz page)
+        const ctaButton = document.getElementById('cta-iniciar-quiz');
+        if(ctaButton) {
+            ctaButton.addEventListener('click', function() {
+                console.log('Botão "CRIAR MEU CARDÁPIO AGORA" clicado. Redirecionando para quiz-negocio.html');
+                window.location.href = 'quiz-negocio.html'; // Redirect to the quiz page
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    // Adiciona um pequeno offset para compensar o header fixo, se necessário
+                    const headerOffset = 70; // Altura aproximada do seu header
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

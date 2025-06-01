@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Dashboard - CardápioFácil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB; /* Cinza claro de fundo */
+        }
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background-color: #1F2937; /* Cinza escuro (gray-800) */
+            color: #D1D5DB; /* Cinza claro (gray-300) */
+            padding: 1.5rem; /* p-6 */
+            transition: width 0.3s ease;
+        }
+        .sidebar-header {
+            margin-bottom: 2rem; /* mb-8 */
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem; /* p-3 px-4 */
+            border-radius: 0.375rem; /* rounded-md */
+            transition: background-color 0.2s ease, color 0.2s ease;
+            color: #9CA3AF; /* gray-400 */
+        }
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: #374151; /* Cinza (gray-700) */
+            color: #FFFFFF; /* Branco */
+        }
+        .sidebar-link i {
+            margin-right: 0.75rem; /* mr-3 */
+            width: 1.25rem; /* w-5 */
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem; /* p-8 */
+            overflow-y: auto;
+        }
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem; /* p-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .qr-code-container {
+            width: 180px;
+            height: 180px;
+            background-color: #E5E7EB; /* Gray-200 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: #6B7280; /* Gray-500 */
+            margin: 0 auto; /* Centralizar */
+        }
+        .menu-link-display {
+            background-color: #F3F4F6; /* Gray-100 */
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            word-break: break-all;
+        }
+
+        /* Mobile sidebar toggle */
+        .mobile-menu-button {
+            display: none; /* Oculto por defeito em ecrãs maiores */
+        }
+        @media (max-width: 768px) { /* md breakpoint */
+            .sidebar {
+                position: fixed;
+                left: -260px; /* Escondido fora do ecrã */
+                top: 0;
+                bottom: 0;
+                z-index: 100;
+                height: 100vh;
+            }
+            .sidebar.open {
+                left: 0;
+            }
+            .mobile-menu-button {
+                display: block;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 110; /* Acima da sidebar quando fechada */
+                background-color: #1F2937;
+                color: white;
+                padding: 0.5rem;
+                border-radius: 0.375rem;
+            }
+            .main-content {
+                padding-top: 4rem; /* Espaço para o botão do menu móvel */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <button id="mobileMenuBtn" class="mobile-menu-button md:hidden">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header text-center">
+                <a href="index.html" class="text-3xl font-bold text-indigo-400">CardápioFácil</a>
+            </div>
+            <nav class="space-y-2">
+                <a href="#" id="navDashboard" class="sidebar-link active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="adicionar-produtos.html" id="navEditMenu" class="sidebar-link">
+                    <i class="fas fa-edit"></i>
+                    <span>Editar Cardápio</span>
+                </a>
+                <a href="#" id="navViewMenu" class="sidebar-link" target="_blank">
+                    <i class="fas fa-eye"></i>
+                    <span>Ver Cardápio Online</span>
+                </a>
+                <a href="planos-pagamento.html" id="navSubscription" class="sidebar-link">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Minha Assinatura</span>
+                </a>
+                <a href="#" id="navSettings" class="sidebar-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+            <div class="mt-auto pt-6">
+                 <button id="logoutButton" class="sidebar-link w-full !text-red-400 hover:!bg-red-700 hover:!text-white">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Bem-vindo(a) ao seu Dashboard, <span id="businessNameDisplay">Negócio</span>!</h1>
+                <p class="text-gray-600">Aqui você pode gerir o seu cardápio online.</p>
+            </header>
+
+            <section class="mb-8 p-6 bg-white rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Seu Cardápio Online</h2>
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Link do seu cardápio:</p>
+                        <div class="menu-link-display text-indigo-600 font-medium mb-3">
+                            <a id="publicMenuLink" href="#" target="_blank">https://cardapiofacil.app/seu-negocio</a>
+                        </div>
+                        <button id="copyMenuLinkBtn" class="text-sm bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md transition-colors">
+                            <i class="fas fa-copy mr-2"></i>Copiar Link
+                        </button>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-sm text-gray-600 mb-2">QR Code:</p>
+                        <div id="qrCodeDashboard" class="qr-code-container">
+                            <span>QR Code (Gerar)</span>
+                        </div>
+                        <button id="downloadQRBtn" class="mt-3 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-md transition-colors">
+                            <i class="fas fa-download mr-2"></i>Baixar QR Code
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Visão Geral</h2>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="stat-card">
+                        <h3 class="text-gray-500 text-sm font-medium mb-1">Visualizações Hoje</h3>
+                        <p class="text-3xl font-bold text-gray-800">123</p>
+                        <p class="text-xs text-green-500 mt-1">+5% desde ontem</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 class="text-gray-500 text-sm font-medium mb-1">Total de Itens</h3>
+                        <p id="totalItemsStat" class="text-3xl font-bold text-gray-800">0</p>
+                        <p class="text-xs text-gray-400 mt-1">No seu cardápio ativo</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 class="text-gray-500 text-sm font-medium mb-1">Plano Atual</h3>
+                        <p id="currentPlanStat" class="text-2xl font-bold text-indigo-600">Básico</p>
+                        <a href="planos-pagamento.html" class="text-xs text-indigo-500 hover:underline mt-1 block">Ver/Mudar plano</a>
+                    </div>
+                     <div class="stat-card">
+                        <h3 class="text-gray-500 text-sm font-medium mb-1">Status do Cardápio</h3>
+                        <p id="menuStatusStat" class="text-2xl font-bold text-green-500">Publicado</p>
+                        <p class="text-xs text-gray-400 mt-1">Seu cardápio está online!</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Ações Rápidas</h2>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <a href="adicionar-produtos.html" class="block p-6 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg shadow-md transition-colors text-center">
+                        <i class="fas fa-plus-circle text-3xl mb-2"></i>
+                        <p class="font-semibold">Adicionar Novo Produto</p>
+                    </a>
+                    <a href="adicionar-produtos.html" class="block p-6 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition-colors text-center">
+                        <i class="fas fa-list-alt text-3xl mb-2"></i>
+                        <p class="font-semibold">Gerir Categorias</p>
+                    </a>
+                    <a href="#" id="shareMenuAction" class="block p-6 bg-teal-500 hover:bg-teal-600 text-white rounded-lg shadow-md transition-colors text-center">
+                        <i class="fas fa-share-alt text-3xl mb-2"></i>
+                        <p class="font-semibold">Partilhar Cardápio</p>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const businessNameDisplay = document.getElementById('businessNameDisplay');
+        const publicMenuLink = document.getElementById('publicMenuLink');
+        const navViewMenu = document.getElementById('navViewMenu');
+        const copyMenuLinkBtn = document.getElementById('copyMenuLinkBtn');
+        const qrCodeDashboard = document.getElementById('qrCodeDashboard');
+        const downloadQRBtn = document.getElementById('downloadQRBtn');
+        const totalItemsStat = document.getElementById('totalItemsStat');
+        const currentPlanStat = document.getElementById('currentPlanStat');
+        const menuStatusStat = document.getElementById('menuStatusStat');
+        const logoutButton = document.getElementById('logoutButton');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+
+        let appData = {
+            businessName: "Seu Negócio",
+            menuSlug: "seu-negocio",
+            subscriptionPlan: "Não Assinado",
+            isMenuPublished: false,
+            totalProducts: 0
+        };
+
+        function loadDashboardData() {
+            // Carregar dados do localStorage
+            const storedQuizData = localStorage.getItem('quizDataGlobal');
+            const storedSubscriptionPlan = localStorage.getItem('userSubscriptionPlan');
+            const storedIsMenuPublished = localStorage.getItem('isMenuPublished');
+            const storedProducts = localStorage.getItem('cardapioProducts');
+
+            if (storedQuizData) {
+                const quizData = JSON.parse(storedQuizData);
+                appData.businessName = quizData.negocioNome || "Seu Negócio";
+                appData.menuSlug = (quizData.negocioNome || "seu-negocio").toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+            }
+            if (storedSubscriptionPlan) {
+                appData.subscriptionPlan = storedSubscriptionPlan;
+            }
+            if (storedIsMenuPublished === 'true') { // localStorage guarda strings
+                appData.isMenuPublished = true;
+            }
+            if (storedProducts) {
+                appData.totalProducts = JSON.parse(storedProducts).length;
+            }
+
+            // Atualizar UI
+            businessNameDisplay.textContent = appData.businessName;
+            const menuLink = `https://cardapiofacil.app/${appData.menuSlug}`; // Simulação de link
+            publicMenuLink.href = menuLink;
+            publicMenuLink.textContent = menuLink;
+            navViewMenu.href = menuLink;
+
+            totalItemsStat.textContent = appData.totalProducts;
+            currentPlanStat.textContent = appData.subscriptionPlan;
+
+            if (appData.isMenuPublished) {
+                menuStatusStat.textContent = "Publicado";
+                menuStatusStat.className = "text-2xl font-bold text-green-500"; // Verde para publicado
+                generateQRCode(menuLink);
+            } else {
+                menuStatusStat.textContent = "Não Publicado";
+                menuStatusStat.className = "text-2xl font-bold text-red-500"; // Vermelho para não publicado
+                 qrCodeDashboard.innerHTML = `<span>Publique para gerar</span>`;
+                 downloadQRBtn.disabled = true;
+            }
+        }
+
+        function generateQRCode(link) {
+            // Usar uma API externa para gerar o QR Code (ex: goqr.me ou qrserver.com)
+            // Por simplicidade, vamos apenas mostrar um placeholder com o link.
+            // Numa aplicação real, você faria uma chamada de API ou usaria uma biblioteca JS.
+            const qrAPI = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(link)}&format=png&bgcolor=ffffff`;
+            qrCodeDashboard.innerHTML = `<img src="${qrAPI}" alt="QR Code do Cardápio" class="rounded-md">`;
+            downloadQRBtn.disabled = false;
+            downloadQRBtn.onclick = () => {
+                // Criar um link temporário para download
+                const a = document.createElement('a');
+                a.href = qrAPI;
+                a.download = `qrcode-${appData.menuSlug}.png`; // Nome do ficheiro
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+        }
+        
+        copyMenuLinkBtn.addEventListener('click', function() {
+            const linkToCopy = publicMenuLink.href;
+            navigator.clipboard.writeText(linkToCopy).then(function() {
+                alert('Link do cardápio copiado para a área de transferência!');
+            }, function(err) {
+                alert('Erro ao copiar o link. Tente manualmente.');
+                console.error('Erro ao copiar: ', err);
+            });
+        });
+
+        logoutButton.addEventListener('click', function() {
+            if (confirm('Tem a certeza que deseja sair?')) {
+                // Limpar dados de sessão/login (localStorage neste exemplo)
+                localStorage.removeItem('quizDataGlobal');
+                localStorage.removeItem('userSubscriptionPlan');
+                localStorage.removeItem('isMenuPublished');
+                localStorage.removeItem('cardapioCategories');
+                localStorage.removeItem('cardapioProducts');
+                localStorage.removeItem('selectedLayoutIdGlobal');
+                // Redirecionar para a página inicial
+                window.location.href = 'index.html';
+            }
+        });
+
+        mobileMenuBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+        });
+        
+        // Fechar sidebar ao clicar num link (para mobile)
+        sidebar.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                    if(this.id !== 'logoutButton'){ // Não fechar se for logout para o confirm aparecer
+                         sidebar.classList.remove('open');
+                    }
+                }
+                // Lógica para destacar link ativo (opcional)
+                sidebar.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+
+        // Inicialização
+        loadDashboardData();
+
+    </script>
+</body>
+</html>

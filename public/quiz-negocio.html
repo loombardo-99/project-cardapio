@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Crie seu Cardápio Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB; /* Light gray background */
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: 4rem auto;
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar-bg {
+            background-color: #E5E7EB; /* Gray-200 */
+        }
+        .progress-bar-fill {
+            background-color: #4F46E5; /* Indigo-600 */
+            transition: width 0.3s ease-in-out;
+        }
+        .quiz-question {
+            display: none; /* Esconde todas as perguntas por padrão */
+        }
+        .quiz-question.active {
+            display: block; /* Mostra apenas a pergunta ativa */
+        }
+        .option-button {
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .option-button:hover {
+            background-color: #EEF2FF; /* Indigo-50 */
+            border-color: #6366F1; /* Indigo-500 */
+        }
+        .option-button.selected {
+            background-color: #6366F1; /* Indigo-500 */
+            color: white;
+            border-color: #4F46E5; /* Indigo-600 */
+        }
+        .nav-button {
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="quiz-container">
+        <div class="text-center mb-8">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">CardápioFácil</a>
+            <h1 class="text-3xl font-bold text-gray-900 mt-4 mb-2">Conte-nos sobre seu Negócio</h1>
+            <p class="text-gray-600">Isso nos ajudará a personalizar seu cardápio.</p>
+        </div>
+
+        <div class="mb-8">
+            <div class="progress-bar-bg w-full h-3 rounded-full">
+                <div id="progressBar" class="progress-bar-fill h-3 rounded-full" style="width: 0%;"></div>
+            </div>
+            <p id="progressText" class="text-sm text-gray-500 text-center mt-2">Passo 1 de 5</p>
+        </div>
+
+        <form id="quizForm">
+            <div id="question1" class="quiz-question active">
+                <label for="negocioNome" class="block text-lg font-semibold text-gray-800 mb-3">1. Qual é o nome do seu negócio?</label>
+                <input type="text" id="negocioNome" name="negocioNome" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ex: Cantina da Nonna">
+                <div class="mt-8 text-right">
+                    <button type="button" onclick="nextQuestion(1)" class="nav-button bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg">Próximo</button>
+                </div>
+            </div>
+
+            <div id="question2" class="quiz-question">
+                <p class="block text-lg font-semibold text-gray-800 mb-4">2. Qual o tipo do seu negócio?</p>
+                <div class="space-y-3">
+                    <button type="button" data-value="Restaurante" onclick="selectOption(this, 'tipoNegocio')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Restaurante</button>
+                    <button type="button" data-value="Bar" onclick="selectOption(this, 'tipoNegocio')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Bar</button>
+                    <button type="button" data-value="Café" onclick="selectOption(this, 'tipoNegocio')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Café</button>
+                    <button type="button" data-value="Lanchonete" onclick="selectOption(this, 'tipoNegocio')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Lanchonete</button>
+                    <button type="button" data-value="Pizzaria" onclick="selectOption(this, 'tipoNegocio')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Pizzaria</button>
+                    <button type="button" data-value="Hamburgueria" onclick="selectOption(this, 'tipoNegocio')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Hamburgueria</button>
+                    <div>
+                        <button type="button" data-value="Outro" onclick="selectOption(this, 'tipoNegocio', true)" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Outro</button>
+                        <input type="text" id="tipoNegocioOutro" name="tipoNegocioOutro" class="w-full p-3 border border-gray-300 rounded-lg mt-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hidden" placeholder="Especifique o tipo">
+                    </div>
+                </div>
+                <input type="hidden" id="tipoNegocio" name="tipoNegocio">
+                <div class="mt-8 flex justify-between">
+                    <button type="button" onclick="prevQuestion(2)" class="nav-button bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg">Anterior</button>
+                    <button type="button" onclick="nextQuestion(2)" class="nav-button bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg">Próximo</button>
+                </div>
+            </div>
+
+            <div id="question3" class="quiz-question">
+                <p class="block text-lg font-semibold text-gray-800 mb-4">3. Qual é o estilo principal do seu negócio?</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" data-value="Moderno" onclick="selectOption(this, 'estiloNegocio')" class="option-button p-4 border border-gray-300 rounded-lg">Moderno</button>
+                    <button type="button" data-value="Rústico" onclick="selectOption(this, 'estiloNegocio')" class="option-button p-4 border border-gray-300 rounded-lg">Rústico</button>
+                    <button type="button" data-value="Clássico" onclick="selectOption(this, 'estiloNegocio')" class="option-button p-4 border border-gray-300 rounded-lg">Clássico</button>
+                    <button type="button" data-value="Divertido" onclick="selectOption(this, 'estiloNegocio')" class="option-button p-4 border border-gray-300 rounded-lg">Divertido</button>
+                    <button type="button" data-value="Sofisticado" onclick="selectOption(this, 'estiloNegocio')" class="option-button p-4 border border-gray-300 rounded-lg">Sofisticado</button>
+                    <button type="button" data-value="Minimalista" onclick="selectOption(this, 'estiloNegocio')" class="option-button p-4 border border-gray-300 rounded-lg">Minimalista</button>
+                </div>
+                <input type="hidden" id="estiloNegocio" name="estiloNegocio">
+                <div class="mt-8 flex justify-between">
+                    <button type="button" onclick="prevQuestion(3)" class="nav-button bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg">Anterior</button>
+                    <button type="button" onclick="nextQuestion(3)" class="nav-button bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg">Próximo</button>
+                </div>
+            </div>
+
+            <div id="question4" class="quiz-question">
+                <p class="block text-lg font-semibold text-gray-800 mb-4">4. Você trabalha com muitas categorias de produtos? <span class="text-sm text-gray-500">(Ex: Entradas, Pratos Principais, Sobremesas, Bebidas)</span></p>
+                 <div class="space-y-3">
+                    <button type="button" data-value="Sim" onclick="selectOption(this, 'muitasCategorias')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Sim</button>
+                    <button type="button" data-value="Não" onclick="selectOption(this, 'muitasCategorias')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Não</button>
+                </div>
+                <input type="hidden" id="muitasCategorias" name="muitasCategorias">
+                <div class="mt-8 flex justify-between">
+                    <button type="button" onclick="prevQuestion(4)" class="nav-button bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg">Anterior</button>
+                    <button type="button" onclick="nextQuestion(4)" class="nav-button bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg">Próximo</button>
+                </div>
+            </div>
+
+            <div id="question5" class="quiz-question">
+                <p class="block text-lg font-semibold text-gray-800 mb-4">5. Você pretende destacar algum item especial ou promoção?</p>
+                <div class="space-y-3">
+                    <button type="button" data-value="Sim, com frequência" onclick="selectOption(this, 'destaqueItens')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Sim, com frequência</button>
+                    <button type="button" data-value="Ocasionalmente" onclick="selectOption(this, 'destaqueItens')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Ocasionalmente</button>
+                    <button type="button" data-value="Não" onclick="selectOption(this, 'destaqueItens')" class="option-button w-full text-left p-4 border border-gray-300 rounded-lg">Não</button>
+                </div>
+                <input type="hidden" id="destaqueItens" name="destaqueItens">
+                <div class="mt-8 flex justify-between">
+                    <button type="button" onclick="prevQuestion(5)" class="nav-button bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg">Anterior</button>
+                    <button type="submit" class="nav-button bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg">Finalizar Quiz</button>
+                </div>
+            </div>
+        </form>
+
+        <div id="loadingScreen" class="quiz-question text-center py-10">
+            <svg class="animate-spin h-12 w-12 text-indigo-600 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="text-xl font-semibold text-gray-800">Preparando sugestões para você...</p>
+            <p class="text-gray-600">Aguarde um momento.</p>
+        </div>
+
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+        const quizData = {}; // Objeto para armazenar as respostas
+
+        // Função para atualizar a barra de progresso
+        function updateProgress() {
+            const progress = (currentQuestion -1) / totalQuestions * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').innerText = `Passo ${currentQuestion} de ${totalQuestions}`;
+        }
+        
+        function slugify(text) { // Função para criar slugs a partir de texto
+             return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Substituir espaços por -
+                .replace(/[^\w\-]+/g, '')       // Remover todos os caracteres não alfanuméricos exceto -
+                .replace(/\-\-+/g, '-')         // Substituir múltiplos - por um único -
+                .replace(/^-+/, '')             // Cortar - do início do texto
+                .replace(/-+$/, '');            // Cortar - do fim do texto
+        }
+
+        // Função para mostrar a pergunta atual e esconder as outras
+        function showQuestion(questionNumber) {
+            document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+            const nextQuestionElement = document.getElementById('question' + questionNumber);
+            if (nextQuestionElement) {
+                nextQuestionElement.classList.add('active');
+            } else if (questionNumber > totalQuestions) { // Se passou da última pergunta, processa os dados
+                document.getElementById('loadingScreen').classList.add('active');
+                
+                // Adicionar o slug do negócio ao quizData
+                if(quizData.negocioNome) {
+                    quizData.menuSlug = slugify(quizData.negocioNome);
+                }
+
+                // Salvar dados no localStorage
+                localStorage.setItem('quizDataGlobal', JSON.stringify(quizData));
+                console.log("Dados do Quiz Salvos:", quizData);
+                
+                // Redirecionar para a página de layout
+                setTimeout(() => {
+                    // Removido o alert, redireciona diretamente
+                    window.location.href = 'layout.html'; // Redirecionar para a próxima tela
+                }, 1500); // Pequeno delay para mostrar a tela de carregamento
+            }
+            updateProgress();
+        }
+
+        // Função para ir para a próxima pergunta
+        function nextQuestion(questionNumber) {
+            // Validação simples para campos de texto
+            if (questionNumber === 1) {
+                const nomeNegocio = document.getElementById('negocioNome').value.trim();
+                if (!nomeNegocio) {
+                    alert('Por favor, insira o nome do seu negócio.');
+                    return;
+                }
+                quizData.negocioNome = nomeNegocio;
+            }
+            // Validação para perguntas de múltipla escolha (se uma opção foi selecionada)
+            if (questionNumber > 1 && questionNumber <= totalQuestions) {
+                const currentQuestionDiv = document.getElementById('question' + questionNumber);
+                // Verifica se existe um input hidden para pegar o nome do campo.
+                // Algumas perguntas podem não ter input hidden se a lógica for diferente.
+                const hiddenInput = currentQuestionDiv.querySelector('input[type="hidden"]');
+                if (hiddenInput) {
+                    const fieldName = hiddenInput.name;
+                    if (!quizData[fieldName] && fieldName) { // Verifica se fieldName não é vazio
+                        alert('Por favor, selecione uma opção.');
+                        return;
+                    }
+                    // Se "Outro" foi selecionado para tipo de negócio, verifica o campo de texto
+                    if (fieldName === 'tipoNegocio' && quizData[fieldName] === 'Outro') {
+                        const outroValor = document.getElementById('tipoNegocioOutro').value.trim();
+                        if(!outroValor) {
+                            alert('Por favor, especifique o tipo do seu negócio.');
+                            return;
+                        }
+                        quizData.tipoNegocioOutro = outroValor;
+                    }
+                } else {
+                    // Se não houver input hidden, pode ser uma pergunta que não armazena dados desta forma
+                    // ou a lógica de validação precisa ser ajustada para essa pergunta específica.
+                    console.warn(`Nenhum input hidden encontrado para validação na pergunta ${questionNumber}. Verifique a lógica se esta pergunta deveria ser validada.`);
+                }
+            }
+
+
+            if (questionNumber < totalQuestions + 1) { 
+                currentQuestion = questionNumber + 1;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        // Função para voltar para a pergunta anterior
+        function prevQuestion(questionNumber) {
+            if (questionNumber > 1) {
+                currentQuestion = questionNumber - 1;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        // Função para lidar com a seleção de opções
+        function selectOption(buttonElement, fieldName, isOther = false) {
+            const parentDiv = buttonElement.closest('div.quiz-question') || buttonElement.closest('div.space-y-3') || buttonElement.closest('div.grid');
+            // Remove a classe 'selected' de outros botões no mesmo grupo
+            if (parentDiv) {
+                parentDiv.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+            }
+            // Adiciona a classe 'selected' ao botão clicado
+            buttonElement.classList.add('selected');
+            
+            const value = buttonElement.dataset.value;
+            quizData[fieldName] = value;
+            
+            const hiddenInput = document.getElementById(fieldName);
+            if (hiddenInput) {
+                hiddenInput.value = value; // Atualiza o input hidden
+            } else {
+                console.warn(`Input hidden com id '${fieldName}' não encontrado.`);
+            }
+
+
+            // Lógica para o campo "Outro" em tipo de negócio
+            const outroInput = document.getElementById('tipoNegocioOutro');
+            if (fieldName === 'tipoNegocio' && outroInput) {
+                if (isOther && value === 'Outro') {
+                    outroInput.classList.remove('hidden');
+                    outroInput.focus();
+                } else {
+                    outroInput.classList.add('hidden');
+                    outroInput.value = ''; 
+                    delete quizData.tipoNegocioOutro;
+                }
+            }
+        }
+
+        // Lidar com o envio do formulário (botão "Finalizar Quiz")
+        document.getElementById('quizForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Previne o envio padrão do formulário
+            
+            // Validação da última pergunta (pergunta 5)
+            const lastQuestionFieldName = 'destaqueItens'; // Nome do campo da última pergunta
+            if (!quizData[lastQuestionFieldName]) {
+                alert('Por favor, selecione uma opção para a última pergunta.');
+                return;
+            }
+            currentQuestion = totalQuestions + 1; // Avança para a lógica de finalização
+            showQuestion(currentQuestion);
+        });
+
+        // Inicializa o quiz mostrando a primeira pergunta
+        showQuestion(currentQuestion);
+    </script>
+
+</body>
+</html>
