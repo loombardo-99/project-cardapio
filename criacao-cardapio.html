@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criador Interativo de Cardápio - CardapioFacil IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* bg-gray-50 */
+        }
+        .cta-button {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        .form-input, .form-textarea, .form-select {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: #6366f1; /* indigo-500 */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .step-indicator {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .step-indicator.active {
+            background-color: #4f46e5; /* indigo-600 */
+            color: white;
+        }
+        .step-indicator.completed {
+            background-color: #34d399; /* green-400 */
+            color: white;
+        }
+        .menu-preview-item img {
+            object-fit: cover;
+            width: 64px; /* Reduzido para dar espaço ao botão */
+            height: 64px;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+        #menuPreviewContainer {
+            min-height: 300px; 
+            border-radius: 0.5rem; 
+        }
+        .category-block {
+            border: 1px solid #e5e7eb; 
+            border-radius: 0.5rem; 
+            padding: 1rem; 
+            margin-bottom: 1rem; 
+        }
+        .item-block {
+            border: 1px dashed #d1d5db; 
+            border-radius: 0.375rem; 
+            padding: 0.75rem; 
+            margin-bottom: 0.75rem; 
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            border: 1px solid #6366f1; 
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: #eef2ff; 
+            color: #4f46e5; 
+            border-radius: 0.375rem; 
+            font-size: 0.875rem; 
+            transition: background-color 0.3s ease;
+        }
+        .custom-file-upload:hover {
+            background-color: #e0e7ff; 
+        }
+        .image-preview-thumbnail {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 0.25rem; 
+            margin-top: 0.5rem; 
+            border: 1px solid #ddd;
+        }
+        #previewCoverImageContainer {
+            position: relative;
+            height: 160px; 
+            background-color: #e5e7eb; 
+            border-radius: 0.5rem 0.5rem 0 0; 
+            overflow: hidden;
+        }
+        #previewCoverImage {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #previewLogo {
+            position: absolute;
+            bottom: -40px; 
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid white;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            z-index: 10; 
+        }
+         #previewHeaderTextContainer { 
+            text-align: center;
+            padding-top: 50px; 
+            padding-bottom: 1rem;
+        }
+        /* Estilos para a Comanda */
+        #orderContainer {
+            margin-top: 2rem; /* mt-8 */
+            padding: 1rem; /* p-4 */
+            background-color: #f3f4f6; /* bg-gray-100 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0; /* py-3 */
+            border-bottom: 1px solid #e5e7eb; /* border-b border-gray-200 */
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        .order-item-name {
+            font-weight: 500; /* medium */
+            color: #374151; /* text-gray-700 */
+            flex-grow: 1;
+        }
+        .order-item-quantity button {
+            background-color: #eef2ff; /* indigo-50 */
+            color: #4f46e5; /* indigo-600 */
+            border: 1px solid #c7d2fe; /* indigo-200 */
+            width: 28px;
+            height: 28px;
+            border-radius: 9999px; /* rounded-full */
+            font-weight: 600; /* semibold */
+            transition: background-color 0.2s;
+        }
+        .order-item-quantity button:hover {
+            background-color: #e0e7ff; /* indigo-100 */
+        }
+        .order-item-quantity span {
+            margin: 0 0.5rem; /* mx-2 */
+            min-width: 20px;
+            text-align: center;
+        }
+         .order-item-remove button {
+            color: #ef4444; /* red-500 */
+            background: transparent;
+            border: none;
+            margin-left: 0.75rem; /* ml-3 */
+         }
+         .order-item-remove button:hover {
+            color: #dc2626; /* red-600 */
+         }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">CardapioFácil IA</a>
+            <nav class="space-x-4">
+                <a href="index.html#recursos" class="text-gray-600 hover:text-indigo-600">Recursos</a>
+                <a href="como-criar-cardapio.html" class="text-gray-600 hover:text-indigo-600">Como Criar Cardápio</a>
+                <a href="como-criar-agente-ia.html" class="text-gray-600 hover:text-indigo-600">Criar Agente IA</a>
+                <a href="login-cadastro.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg cta-button">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-xl">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-indigo-700 mb-3 text-center">Crie seu Cardápio Interativo</h1>
+            <p class="text-center text-gray-600 mb-8 sm:mb-10">Siga os passos abaixo para montar um cardápio incrível para o seu negócio!</p>
+
+            <div class="flex justify-center space-x-2 sm:space-x-4 mb-8 sm:mb-12">
+                <div id="stepIndicator1" class="step-indicator active w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base">1</div>
+                <div id="stepIndicator2" class="step-indicator w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base bg-gray-300 text-gray-600">2</div>
+                <div id="stepIndicator3" class="step-indicator w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base bg-gray-300 text-gray-600">3</div>
+                <div id="stepIndicator4" class="step-indicator w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base bg-gray-300 text-gray-600">4</div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                <div>
+                    <form id="interactiveMenuForm">
+                        <div id="step1" class="step-content active">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Passo 1: Sobre seu Negócio</h2>
+                            <div class="mb-4">
+                                <label for="restaurantName" class="block text-sm font-medium text-gray-700 mb-1">Nome do Restaurante/Negócio</label>
+                                <input type="text" id="restaurantName" name="restaurantName" class="form-input w-full p-3 border border-gray-300 rounded-lg shadow-sm" placeholder="Ex: Cantina da Mama" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="restaurantType" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Cozinha/Negócio</label>
+                                <input type="text" id="restaurantType" name="restaurantType" class="form-input w-full p-3 border border-gray-300 rounded-lg shadow-sm" placeholder="Ex: Italiana, Hamburgueria, Cafeteria">
+                            </div>
+                            <div class="mb-4">
+                                <label for="restaurantLogo" class="block text-sm font-medium text-gray-700 mb-1">Logo (Opcional)</label>
+                                <label for="restaurantLogoInput" class="custom-file-upload">
+                                    <i class="fas fa-upload mr-2"></i>Escolher arquivo do Logo
+                                </label>
+                                <input type="file" id="restaurantLogoInput" name="restaurantLogo" accept="image/*" class="form-input">
+                                <img id="logoPreview" src="#" alt="Pré-visualização do Logo" class="hidden image-preview-thumbnail"/>
+                                <p class="text-xs text-gray-500 mt-1">PNG, JPG, GIF até 2MB.</p>
+                            </div>
+                            <div class="mb-6">
+                                <label for="coverImage" class="block text-sm font-medium text-gray-700 mb-1">Imagem de Capa (Opcional)</label>
+                                <label for="coverImageInput" class="custom-file-upload">
+                                    <i class="fas fa-image mr-2"></i>Escolher arquivo da Capa
+                                </label>
+                                <input type="file" id="coverImageInput" name="coverImage" accept="image/*" class="form-input">
+                                <img id="coverPreview" src="#" alt="Pré-visualização da Capa" class="hidden image-preview-thumbnail !w-24 !h-14"/>
+                                <p class="text-xs text-gray-500 mt-1">Recomendado: 1200x400px. PNG, JPG até 2MB.</p>
+                            </div>
+                            <button type="button" onclick="nextStep()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg cta-button">Próximo Passo <i class="fas fa-arrow-right ml-2"></i></button>
+                        </div>
+
+                        <div id="step2" class="step-content">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Passo 2: Crie as Categorias</h2>
+                            <div id="categoriesContainer" class="space-y-4 mb-4">
+                            </div>
+                            <button type="button" onclick="addCategoryField()" class="mb-4 text-sm bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg cta-button"><i class="fas fa-plus mr-2"></i>Adicionar Categoria</button>
+                            <div class="flex justify-between">
+                                <button type="button" onclick="prevStep()" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-arrow-left mr-2"></i>Anterior</button>
+                                <button type="button" onclick="nextStep()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg cta-button">Próximo Passo <i class="fas fa-arrow-right ml-2"></i></button>
+                            </div>
+                        </div>
+
+                        <div id="step3" class="step-content">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Passo 3: Adicione os Itens</h2>
+                            <p class="text-sm text-gray-600 mb-6">Adicione itens dentro das categorias que você criou.</p>
+                            <div id="itemsContainer" class="space-y-6">
+                            </div>
+                            <div class="flex justify-between mt-8">
+                                <button type="button" onclick="prevStep()" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-arrow-left mr-2"></i>Anterior</button>
+                                <button type="button" onclick="nextStep()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg cta-button">Finalizar Cardápio <i class="fas fa-check ml-2"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div id="step4" class="step-content text-center">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Parabéns! Seu cardápio base está pronto!</h2>
+                             <i class="fas fa-glass-cheers text-6xl text-yellow-500 mb-6"></i>
+                            <p class="text-gray-600 mb-6">Confira a pré-visualização final e sua comanda ao lado. Para salvar, publicar e ter acesso a todas as funcionalidades, crie sua conta e escolha um plano.</p>
+                            
+                            <div id="finalPreviewContainerStep4" class="bg-gray-100 p-4 rounded-lg shadow-inner mb-8 lg:hidden">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Pré-visualização Final</h3>
+                            </div>
+                             <div id="finalOrderContainerStep4" class="bg-gray-100 p-4 rounded-lg shadow-inner mb-8 lg:hidden">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Sua Comanda Final</h3>
+                            </div>
+
+                            <div class="space-y-3 sm:space-y-0 sm:flex sm:justify-center sm:space-x-4">
+                                <button type="button" onclick="prevStep()" class="w-full sm:w-auto bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-arrow-left mr-2"></i>Voltar e Editar</button>
+                                <button type="button" onclick="location.href='login-cadastro.html#registerForm'" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-user-plus mr-2"></i>Criar Conta e Salvar</button>
+                                <button type="button" onclick="location.href='escolher-plano.html'" class="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-gem mr-2"></i>Ver Planos</button>
+                            </div>
+                             <p class="text-xs text-gray-500 mt-8">Este é um criador interativo para demonstração. Os dados não são salvos permanentemente sem a criação de uma conta.</p>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="mainPreviewColumn" class="bg-gray-100 p-4 sm:p-6 rounded-lg shadow-inner">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Pré-visualização do Cardápio</h3>
+                    <div id="menuPreviewContainer" class="space-y-0"> 
+                        <div id="previewHeader" class="relative mb-0"> 
+                            <div id="previewCoverImageContainer">
+                                <img id="previewCoverImage" src="https://placehold.co/600x200/E2E8F0/4A5568?text=Capa" alt="Imagem de Capa" class="">
+                            </div>
+                            <img id="previewLogo" src="https://placehold.co/100x100/E2E8F0/4A5568?text=Logo" alt="Logo" class="rounded-full w-20 h-20 sm:w-24 sm:h-24 object-cover hidden">
+                        </div>
+                         <div id="previewHeaderTextContainer">
+                            <h4 id="previewRestaurantName" class="text-2xl font-bold text-gray-800">Nome do Seu Restaurante</h4>
+                            <p id="previewRestaurantType" class="text-sm text-gray-500">Tipo de Cozinha</p>
+                        </div>
+                        <div id="previewCategoriesContainer" class="pt-4">
+                        </div>
+                    </div>
+                    <!-- Container da Comanda -->
+                    <div id="orderContainer" class="hidden">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-3 border-t pt-4 mt-6">Sua Comanda</h3>
+                        <div id="orderItemsContainer" class="space-y-2">
+                            <!-- Itens da comanda aqui -->
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-3 border-t font-semibold text-lg text-gray-800">
+                            <span>Total:</span>
+                            <span id="orderTotal">R$ 0.00</span>
+                        </div>
+                        <button type="button" id="checkoutButton" class="mt-4 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg cta-button hidden">
+                            Finalizar Pedido (Simulado)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-indigo-900 text-indigo-100 py-12 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <a href="index.html" class="text-xl font-bold text-white mb-4 inline-block">CardápioFácil IA</a>
+            <div class="space-x-6 mb-4">
+                <a href="sobre-nos.html" class="hover:text-white">Sobre Nós</a>
+                <a href="termos-de-servico.html" class="hover:text-white">Termos de Serviço</a>
+                <a href="politica-de-privacidade.html" class="hover:text-white">Política de Privacidade</a>
+                <a href="contato.html" class="hover:text-white">Contato</a>
+            </div>
+            <div class="flex justify-center space-x-4 mb-4 text-indigo-200">
+                <a href="#" class="hover:text-white" aria-label="Facebook"><i class="fab fa-facebook-square fa-2x"></i></a>
+                <a href="#" class="hover:text-white" aria-label="Instagram"><i class="fab fa-instagram-square fa-2x"></i></a>
+                <a href="#" class="hover:text-white" aria-label="LinkedIn"><i class="fab fa-linkedin fa-2x"></i></a>
+            </div>
+            <p class="text-sm text-indigo-300">&copy; <span id="currentYearInteractive"></span> CardápioFácil IA. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYearInteractive').textContent = new Date().getFullYear();
+        let currentStep = 1;
+        const totalSteps = 4;
+        const menuData = {
+            restaurantName: '',
+            restaurantType: '',
+            restaurantLogo: '',
+            coverImage: '',
+            categories: [],
+            order: [] // { id: 'itemId', name: 'Item Name', price: 10.00, quantity: 1 }
+        };
+
+        const logoInput = document.getElementById('restaurantLogoInput');
+        const logoPreviewElement = document.getElementById('logoPreview');
+        if (logoInput) {
+            logoInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        if(logoPreviewElement) logoPreviewElement.src = e.target.result;
+                        if(logoPreviewElement) logoPreviewElement.classList.remove('hidden');
+                        menuData.restaurantLogo = e.target.result;
+                        updatePreview();
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        
+        const coverImageInput = document.getElementById('coverImageInput');
+        const coverPreviewElement = document.getElementById('coverPreview'); 
+        if (coverImageInput) {
+            coverImageInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        if(coverPreviewElement) coverPreviewElement.src = e.target.result;
+                        if(coverPreviewElement) coverPreviewElement.classList.remove('hidden');
+                        menuData.coverImage = e.target.result;
+                        updatePreview();
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function updateStepIndicator() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const indicator = document.getElementById(`stepIndicator${i}`);
+                const stepContent = document.getElementById(`step${i}`);
+                indicator.classList.remove('active', 'completed', 'bg-gray-300', 'text-gray-600', 'bg-indigo-600', 'text-white');
+                
+                if (i < currentStep) {
+                    indicator.classList.add('completed');
+                    indicator.innerHTML = '<i class="fas fa-check"></i>';
+                } else if (i === currentStep) {
+                    indicator.classList.add('active');
+                    indicator.innerHTML = i;
+                } else {
+                    indicator.classList.add('bg-gray-300', 'text-gray-600');
+                    indicator.innerHTML = i;
+                }
+                stepContent.classList.toggle('active', i === currentStep);
+            }
+             document.getElementById('mainPreviewColumn').style.display = currentStep === 4 ? 'none' : 'block';
+             document.getElementById('orderContainer').style.display = currentStep === 4 ? 'none' : (menuData.order.length > 0 ? 'block' : 'none');
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                // Validações...
+                if (currentStep === 1) {
+                    const restaurantNameInput = document.getElementById('restaurantName');
+                    if (!restaurantNameInput.value.trim()) {
+                        alert('Por favor, insira o nome do restaurante.');
+                        restaurantNameInput.focus();
+                        return;
+                    }
+                }
+                if (currentStep === 2 && menuData.categories.length === 0) {
+                     alert('Por favor, adicione pelo menos uma categoria.');
+                     return;
+                }
+                // Não precisa mais da validação de item aqui, pois o usuário pode querer apenas ver o cardápio antes de adicionar à comanda
+                currentStep++;
+                updateStepIndicator();
+                if (currentStep === 3) generateItemFields(); 
+                if (currentStep === 4) {
+                    renderFinalPreviewStep4(); 
+                    renderFinalOrderStep4();
+                }
+                updatePreview(); 
+                updateOrderDisplay(); // Atualiza a comanda ao mudar de passo
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepIndicator();
+                if (currentStep === 3) generateItemFields();
+                 updatePreview();
+                 updateOrderDisplay();
+            }
+        }
+
+        function addCategoryField(name = '') {
+            const categoryId = `cat${Date.now()}`;
+            const container = document.getElementById('categoriesContainer');
+            const newCategoryDiv = document.createElement('div');
+            newCategoryDiv.classList.add('relative', 'p-4', 'border', 'border-gray-300', 'rounded-lg', 'bg-white');
+            newCategoryDiv.innerHTML = `
+                <input type="text" value="${name}" class="form-input w-full p-2 border-gray-300 rounded-md category-name-input" placeholder="Nome da Categoria (Ex: Pizzas)" data-id="${categoryId}" oninput="updateCategoryName('${categoryId}', this.value)">
+                <button type="button" onclick="removeCategory('${categoryId}', this.parentElement)" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xl p-1 leading-none">&times;</button>
+            `;
+            container.appendChild(newCategoryDiv);
+            menuData.categories.push({ id: categoryId, name: name, items: [] });
+            updatePreview();
+        }
+        
+        function removeCategory(categoryId, element) {
+            menuData.categories = menuData.categories.filter(cat => cat.id !== categoryId);
+            // Remover itens da comanda que pertenciam a esta categoria
+            menuData.order = menuData.order.filter(orderItem => {
+                const itemSourceCategory = menuData.categories.find(cat => cat.items.some(i => i.id === orderItem.id));
+                return itemSourceCategory; // Mantém apenas se o item ainda tem uma categoria válida
+            });
+            element.remove();
+            updatePreview();
+            updateOrderDisplay();
+        }
+        
+        function updateCategoryName(categoryId, newName) {
+            const category = menuData.categories.find(cat => cat.id === categoryId);
+            if (category) category.name = newName;
+            updatePreview();
+        }
+
+        function generateItemFields() {
+            const container = document.getElementById('itemsContainer');
+            container.innerHTML = ''; 
+            menuData.categories.forEach(category => {
+                if (!category.name.trim()) return; 
+
+                const categoryBlock = document.createElement('div');
+                categoryBlock.classList.add('category-block', 'bg-white');
+                categoryBlock.innerHTML = `<h3 class="text-lg font-semibold text-indigo-600 mb-3">${category.name}</h3><div id="items-${category.id}" class="space-y-3"></div>
+                <button type="button" onclick="addItemField('${category.id}')" class="mt-3 text-sm bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded-md cta-button"><i class="fas fa-plus mr-1"></i>Adicionar Item</button>`;
+                container.appendChild(categoryBlock);
+                if (category.items) {
+                    category.items.forEach(item => {
+                        addItemField(category.id, item);
+                    });
+                }
+            });
+        }
+
+        function addItemField(categoryId, itemData = {}) {
+            const itemId = itemData.id || `item${Date.now()}`;
+            const itemsDiv = document.getElementById(`items-${categoryId}`);
+            if(!itemsDiv) return;
+
+            const newItemDiv = document.createElement('div');
+            newItemDiv.classList.add('item-block', 'relative', 'grid', 'grid-cols-1', 'md:grid-cols-2', 'gap-3', 'bg-gray-50');
+            newItemDiv.innerHTML = `
+                <div>
+                    <label class="block text-xs font-medium text-gray-600">Nome do Item</label>
+                    <input type="text" value="${itemData.name || ''}" class="form-input w-full p-2 text-sm border-gray-300 rounded item-name" placeholder="Ex: Pizza Margherita" data-category-id="${categoryId}" data-item-id="${itemId}" oninput="updateItemData(this)">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-600">Preço (R$)</label>
+                    <input type="number" value="${itemData.price || ''}" step="0.01" class="form-input w-full p-2 text-sm border-gray-300 rounded item-price" placeholder="Ex: 29.90" data-category-id="${categoryId}" data-item-id="${itemId}" oninput="updateItemData(this)">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-medium text-gray-600">Descrição</label>
+                    <textarea class="form-textarea w-full p-2 text-sm border-gray-300 rounded item-description" placeholder="Ex: Molho de tomate fresco, mussarela e manjericão." data-category-id="${categoryId}" data-item-id="${itemId}" oninput="updateItemData(this)">${itemData.description || ''}</textarea>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Imagem do Item (Opcional)</label>
+                    <label for="itemImageInput-${itemId}" class="custom-file-upload !text-xs !py-1 !px-2">
+                        <i class="fas fa-upload mr-1"></i>Escolher
+                    </label>
+                    <input type="file" id="itemImageInput-${itemId}" accept="image/*" class="item-image-input" data-category-id="${categoryId}" data-item-id="${itemId}" onchange="handleItemImageUpload(event, '${categoryId}', '${itemId}')">
+                    <img id="itemImagePreview-${itemId}" src="${itemData.image || '#'}" alt="Preview" class="${itemData.image ? '' : 'hidden'} image-preview-thumbnail !w-14 !h-14"/>
+                </div>
+                <button type="button" onclick="removeItem(this.parentElement, '${categoryId}', '${itemId}')" class="absolute top-1 right-1 text-red-500 hover:text-red-700 text-xl p-1 leading-none">&times;</button>
+            `;
+            itemsDiv.appendChild(newItemDiv);
+
+            if (!itemData.id) { 
+                const category = menuData.categories.find(cat => cat.id === categoryId);
+                if (category) {
+                    if (!category.items) category.items = [];
+                    category.items.push({ 
+                        id: itemId, 
+                        name: '', 
+                        price: '', 
+                        description: '',
+                        image: '' 
+                    });
+                }
+            }
+            updatePreview();
+        }
+        
+        function handleItemImageUpload(event, categoryId, itemId) {
+            const file = event.target.files[0];
+            const previewElement = document.getElementById(`itemImagePreview-${itemId}`);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewElement.src = e.target.result;
+                    previewElement.classList.remove('hidden');
+                    
+                    const category = menuData.categories.find(cat => cat.id === categoryId);
+                    if (category) {
+                        const item = category.items.find(it => it.id === itemId);
+                        if (item) {
+                            item.image = e.target.result; 
+                            updatePreview();
+                        }
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateItemData(inputElement) {
+            const categoryId = inputElement.dataset.categoryId;
+            const itemId = inputElement.dataset.itemId;
+            const property = inputElement.classList.contains('item-name') ? 'name' :
+                             inputElement.classList.contains('item-price') ? 'price' : 'description';
+            
+            const category = menuData.categories.find(cat => cat.id === categoryId);
+            if (category) {
+                const item = category.items.find(it => it.id === itemId);
+                if (item) {
+                    item[property] = inputElement.value;
+                    // Atualizar na comanda se o item estiver lá e o nome/preço mudar
+                    const orderItem = menuData.order.find(oi => oi.id === itemId);
+                    if (orderItem) {
+                        if (property === 'name') orderItem.name = inputElement.value;
+                        if (property === 'price') orderItem.price = parseFloat(inputElement.value) || 0;
+                        updateOrderDisplay();
+                    }
+                    updatePreview();
+                }
+            }
+        }
+        
+        function removeItem(element, categoryId, itemId) {
+            const category = menuData.categories.find(cat => cat.id === categoryId);
+            if (category) {
+                category.items = category.items.filter(item => item.id !== itemId);
+            }
+            // Remover da comanda também
+            menuData.order = menuData.order.filter(orderItem => orderItem.id !== itemId);
+            element.remove();
+            updatePreview();
+            updateOrderDisplay();
+        }
+
+        function generatePreviewHTML() {
+            let headerHTML = `
+                <div id="previewHeader" class="relative mb-0">
+                    <div id="previewCoverImageContainer">
+                        <img id="previewCoverImage" src="${menuData.coverImage || 'https://placehold.co/600x200/e2e8f0/4a5568?text=Capa'}" alt="Imagem de Capa" class="">
+                    </div>
+                    <img id="previewLogo" src="${menuData.restaurantLogo || 'https://placehold.co/100x100/e2e8f0/4a5568?text=Logo'}" alt="Logo" class="rounded-full w-20 h-20 sm:w-24 sm:h-24 object-cover ${menuData.restaurantLogo ? '' : 'hidden'}">
+                </div>
+                <div id="previewHeaderTextContainer">
+                    <h4 id="previewRestaurantNameText" class="text-2xl font-bold text-gray-800">${menuData.restaurantName || 'Nome do Seu Restaurante'}</h4>
+                    <p id="previewRestaurantTypeText" class="text-sm text-gray-500">${menuData.restaurantType || 'Tipo de Cozinha'}</p>
+                </div>
+            `;
+
+            let categoriesHTML = '<div id="previewCategoriesContent" class="pt-4">';
+            if (menuData.categories.length > 0) {
+                menuData.categories.forEach(category => {
+                    if (!category.name.trim() && (!category.items || category.items.length === 0)) return;
+
+                    categoriesHTML += `<div class="mb-6"><h5 class="text-xl font-semibold text-indigo-700 border-b-2 border-indigo-200 pb-2 mb-3">${category.name || 'Categoria Sem Nome'}</h5>`;
+                    if (category.items && category.items.length > 0) {
+                        categoriesHTML += '<ul class="space-y-3">';
+                        category.items.forEach(item => {
+                            if (!item.name && !item.price && !item.description && !item.image) return;
+                            const itemPrice = item.price ? `R$ ${parseFloat(item.price).toFixed(2)}` : '';
+                            const itemImageHTML = item.image ? `<img src="${item.image}" alt="${item.name || 'Item'}" class="menu-preview-item">` : '<div class="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center text-gray-400 text-xs"><i class="fas fa-image fa-2x"></i></div>';
+                            categoriesHTML += `
+                                <li class="menu-preview-item flex items-center space-x-3 p-3 bg-white rounded-md shadow-sm">
+                                    ${itemImageHTML}
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-baseline">
+                                            <h6 class="font-semibold text-gray-700">${item.name || 'Item sem nome'}</h6>
+                                            ${itemPrice ? `<p class="text-sm font-medium text-indigo-600">${itemPrice}</p>` : ''}
+                                        </div>
+                                        ${item.description ? `<p class="text-xs text-gray-500 mt-1">${item.description}</p>` : ''}
+                                    </div>
+                                    <button type="button" onclick="addItemToOrder('${category.id}', '${item.id}')" class="ml-auto bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold py-1 px-2 rounded-md cta-button">
+                                        <i class="fas fa-plus-circle mr-1 sm:mr-0"></i> <span class="hidden sm:inline">Adicionar</span>
+                                    </button>
+                                </li>`;
+                        });
+                        categoriesHTML += '</ul>';
+                    } else if (category.name.trim()) {
+                         categoriesHTML += '<p class="text-xs text-gray-400 italic">Nenhum item adicionado a esta categoria ainda.</p>';
+                    }
+                    categoriesHTML += '</div>'; 
+                });
+            } else if (currentStep > 1) {
+                 categoriesHTML += '<p class="text-sm text-gray-400 italic text-center py-8">Comece adicionando categorias e itens para ver seu cardápio aqui!</p>';
+            }
+            categoriesHTML += '</div>'; 
+            return headerHTML + categoriesHTML;
+        }
+
+        function addItemToOrder(categoryId, itemId) {
+            const category = menuData.categories.find(cat => cat.id === categoryId);
+            if (!category) return;
+            const item = category.items.find(it => it.id === itemId);
+            if (!item || !item.price) {
+                alert("Este item não pode ser adicionado (sem preço definido).");
+                return;
+            }
+
+            const existingOrderItem = menuData.order.find(orderItem => orderItem.id === itemId);
+            if (existingOrderItem) {
+                existingOrderItem.quantity++;
+            } else {
+                menuData.order.push({
+                    id: itemId,
+                    name: item.name,
+                    price: parseFloat(item.price),
+                    quantity: 1
+                });
+            }
+            updateOrderDisplay();
+        }
+
+        function updateOrderItemQuantity(itemId, change) {
+            const orderItem = menuData.order.find(item => item.id === itemId);
+            if (orderItem) {
+                orderItem.quantity += change;
+                if (orderItem.quantity <= 0) {
+                    removeOrderItem(itemId); // Remove se a quantidade for zero ou menos
+                } else {
+                    updateOrderDisplay();
+                }
+            }
+        }
+
+        function removeOrderItem(itemId) {
+            menuData.order = menuData.order.filter(item => item.id !== itemId);
+            updateOrderDisplay();
+        }
+
+        function updateOrderDisplay() {
+            const orderContainer = document.getElementById('orderContainer');
+            const orderItemsContainer = document.getElementById('orderItemsContainer');
+            const orderTotalElement = document.getElementById('orderTotal');
+            const checkoutButton = document.getElementById('checkoutButton');
+            
+            orderItemsContainer.innerHTML = '';
+            let total = 0;
+
+            if (menuData.order.length === 0) {
+                orderContainer.style.display = 'none';
+                checkoutButton.style.display = 'none';
+                if (currentStep === 4) renderFinalOrderStep4(); // Limpa comanda no passo 4 também
+                return;
+            }
+            
+            orderContainer.style.display = 'block';
+            checkoutButton.style.display = 'block';
+
+
+            menuData.order.forEach(item => {
+                const itemSubtotal = item.price * item.quantity;
+                total += itemSubtotal;
+                const orderItemDiv = document.createElement('div');
+                orderItemDiv.classList.add('order-item');
+                orderItemDiv.innerHTML = `
+                    <div class="flex-1">
+                        <p class="order-item-name">${item.name}</p>
+                        <p class="text-xs text-gray-500">R$ ${item.price.toFixed(2)} x ${item.quantity}</p>
+                    </div>
+                    <div class="order-item-quantity flex items-center">
+                        <button type="button" onclick="updateOrderItemQuantity('${item.id}', -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button type="button" onclick="updateOrderItemQuantity('${item.id}', 1)">+</button>
+                    </div>
+                    <p class="font-medium text-gray-600 w-20 text-right">R$ ${itemSubtotal.toFixed(2)}</p>
+                    <div class="order-item-remove">
+                        <button type="button" onclick="removeOrderItem('${item.id}')" title="Remover Item"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                `;
+                orderItemsContainer.appendChild(orderItemDiv);
+            });
+
+            orderTotalElement.textContent = `R$ ${total.toFixed(2)}`;
+            if (currentStep === 4) renderFinalOrderStep4();
+        }
+
+
+        function updatePreview() {
+            menuData.restaurantName = document.getElementById('restaurantName').value;
+            menuData.restaurantType = document.getElementById('restaurantType').value;
+
+            const menuPreviewContainer = document.getElementById('menuPreviewContainer');
+            menuPreviewContainer.innerHTML = generatePreviewHTML(); 
+            updateOrderDisplay(); // Garante que a comanda seja atualizada junto com a preview
+
+            if (currentStep === 4) {
+                renderFinalPreviewStep4(); 
+                renderFinalOrderStep4();
+            }
+        }
+        
+        function renderFinalPreviewStep4() {
+            const finalPreviewContainer = document.getElementById('finalPreviewContainerStep4');
+            if (finalPreviewContainer) {
+                const previewHTML = generatePreviewHTML();
+                finalPreviewContainer.innerHTML = `<div class="rounded-lg p-4 overflow-auto max-h-96">${previewHTML}</div>`;
+            }
+        }
+
+        function renderFinalOrderStep4() {
+            const finalOrderContainer = document.getElementById('finalOrderContainerStep4');
+            if (finalOrderContainer) {
+                if (menuData.order.length === 0) {
+                    finalOrderContainer.innerHTML = '<p class="text-sm text-gray-500 italic text-center py-4">Sua comanda está vazia.</p>';
+                    return;
+                }
+                let orderHTML = '<div class="space-y-2">';
+                let total = 0;
+                menuData.order.forEach(item => {
+                    const itemSubtotal = item.price * item.quantity;
+                    total += itemSubtotal;
+                    orderHTML += `
+                        <div class="flex justify-between items-center text-sm p-2 bg-white rounded shadow-sm">
+                            <span class="text-gray-700">${item.name} (x${item.quantity})</span>
+                            <span class="font-medium text-gray-600">R$ ${itemSubtotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+                orderHTML += '</div>';
+                orderHTML += `
+                    <div class="flex justify-between items-center mt-3 pt-2 border-t font-semibold text-md text-gray-800">
+                        <span>Total:</span>
+                        <span>R$ ${total.toFixed(2)}</span>
+                    </div>
+                `;
+                finalOrderContainer.innerHTML = orderHTML;
+            }
+        }
+
+
+        // Inicializa
+        updateStepIndicator();
+        addCategoryField("Ex: Pratos Principais"); 
+        updatePreview(); 
+
+        document.getElementById('restaurantName').addEventListener('input', updatePreview);
+        document.getElementById('restaurantType').addEventListener('input', updatePreview);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criação de Agente IA para WhatsApp - CardapioFacil IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* bg-gray-50 */
+        }
+        .cta-button {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        .form-input, .form-textarea, .form-select {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: #8B5CF6; /* purple-500 */
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+        .step-indicator {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .step-indicator.active {
+            background-color: #7c3aed; /* purple-600 */
+            color: white;
+        }
+        .step-indicator.completed {
+            background-color: #34d399; /* green-400 */
+            color: white;
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            border: 1px solid #8B5CF6; /* purple-500 */
+            display: inline-block;
+            padding: 8px 14px;
+            cursor: pointer;
+            background-color: #f5f3ff; /* purple-50 */
+            color: #7c3aed; /* purple-600 */
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 0.875rem; /* text-sm */
+            transition: background-color 0.3s ease;
+        }
+        .custom-file-upload:hover {
+            background-color: #ede9fe; /* purple-100 */
+        }
+        .info-box {
+            background-color: #f5f3ff; /* purple-50 */
+            border-left: 4px solid #8B5CF6; /* purple-500 */
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            color: #5b21b6; /* purple-700 */
+        }
+        .info-box h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+         .info-box ul {
+            list-style-type: disc;
+            margin-left: 1.25rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">CardapioFácil IA</a>
+            <nav class="space-x-4">
+                <a href="index.html#recursos" class="text-gray-600 hover:text-indigo-600">Recursos</a>
+                <a href="criacao-cardapio.html" class="text-gray-600 hover:text-indigo-600">Criar Cardápio</a>
+                <a href="criacao-agentes.html" class="text-gray-600 hover:text-indigo-600">Criar Agente IA</a>
+                <a href="login-cadastro.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg cta-button">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-xl">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-purple-700 mb-3 text-center">Crie seu Agente IA para WhatsApp</h1>
+            <p class="text-center text-gray-600 mb-8 sm:mb-10">Configure um assistente virtual inteligente para automatizar seu atendimento e interagir com clientes 24/7.</p>
+
+            <div class="flex justify-center space-x-2 sm:space-x-4 mb-8 sm:mb-12">
+                <div id="agentStepIndicator1" class="step-indicator active w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base">1</div>
+                <div id="agentStepIndicator2" class="step-indicator w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base bg-gray-300 text-gray-600">2</div>
+                <div id="agentStepIndicator3" class="step-indicator w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base bg-gray-300 text-gray-600">3</div>
+                <div id="agentStepIndicator4" class="step-indicator w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base bg-gray-300 text-gray-600">4</div>
+                <div id="agentStepIndicator5" class="step-indicator w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base bg-gray-300 text-gray-600">5</div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+                <!-- Coluna do Formulário -->
+                <div class="lg:col-span-2">
+                    <form id="agentCreationForm">
+                        <!-- Passo 1: Informações Básicas do Agente -->
+                        <div id="agentStep1" class="step-content active">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Passo 1: Definições Básicas do Agente</h2>
+                            <div class="mb-4">
+                                <label for="agentName" class="block text-sm font-medium text-gray-700 mb-1">Nome do Agente (Ex: Atendente Virtual da Pizzaria)</label>
+                                <input type="text" id="agentName" name="agentName" class="form-input w-full p-3 border border-gray-300 rounded-lg shadow-sm" placeholder="Como seus clientes chamarão o agente?" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="businessType" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Negócio</label>
+                                <select id="businessType" name="businessType" class="form-select w-full p-3 border border-gray-300 rounded-lg shadow-sm">
+                                    <option value="">Selecione o tipo</option>
+                                    <option value="restaurante">Restaurante</option>
+                                    <option value="pizzaria">Pizzaria</option>
+                                    <option value="hamburgueria">Hamburgueria</option>
+                                    <option value="cafeteria">Cafeteria</option>
+                                    <option value="bar">Bar</option>
+                                    <option value="delivery">Serviço de Delivery Geral</option>
+                                    <option value="servicos">Serviços (Agendamento)</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                             <div class="mb-6">
+                                <label for="agentGoal" class="block text-sm font-medium text-gray-700 mb-1">Principal Objetivo do Agente</label>
+                                <select id="agentGoal" name="agentGoal" class="form-select w-full p-3 border border-gray-300 rounded-lg shadow-sm">
+                                    <option value="suporte">Suporte ao Cliente / FAQ</option>
+                                    <option value="vendas">Receber Pedidos / Vendas</option>
+                                    <option value="agendamento">Agendamentos</option>
+                                    <option value="qualificacao">Qualificação de Leads</option>
+                                    <option value="geral">Atendimento Geral</option>
+                                </select>
+                            </div>
+                            <button type="button" onclick="nextAgentStep()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg cta-button">Próximo Passo <i class="fas fa-arrow-right ml-2"></i></button>
+                        </div>
+
+                        <!-- Passo 2: Personalidade e Tom de Voz -->
+                        <div id="agentStep2" class="step-content">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Passo 2: Personalidade e Tom</h2>
+                            <div class="mb-4">
+                                <label for="agentTone" class="block text-sm font-medium text-gray-700 mb-1">Tom de Voz do Agente</label>
+                                <select id="agentTone" name="agentTone" class="form-select w-full p-3 border border-gray-300 rounded-lg shadow-sm">
+                                    <option value="amigavel">Amigável e prestativo</option>
+                                    <option value="formal">Formal e direto</option>
+                                    <option value="divertido">Divertido e engajador</option>
+                                    <option value="neutro">Neutro e informativo</option>
+                                </select>
+                            </div>
+                            <div class="mb-6">
+                                <label for="greetingMessage" class="block text-sm font-medium text-gray-700 mb-1">Mensagem de Saudação Proativa (Opcional)</label>
+                                <textarea id="greetingMessage" name="greetingMessage" rows="3" class="form-textarea w-full p-3 border border-gray-300 rounded-lg shadow-sm" placeholder="Ex: Olá! 👋 Sou o assistente virtual da [Nome do Negócio]. Como posso te ajudar hoje?"></textarea>
+                                <p class="text-xs text-gray-500 mt-1">Esta mensagem pode ser enviada quando um cliente inicia uma conversa ou para reengajamento (configurável nos fluxos n8n).</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <button type="button" onclick="prevAgentStep()" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-arrow-left mr-2"></i>Anterior</button>
+                                <button type="button" onclick="nextAgentStep()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg cta-button">Próximo Passo <i class="fas fa-arrow-right ml-2"></i></button>
+                            </div>
+                        </div>
+                        
+                        <!-- Passo 3: Base de Conhecimento -->
+                        <div id="agentStep3" class="step-content">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Passo 3: Base de Conhecimento</h2>
+                             <div class="mb-4">
+                                <label for="faqFile" class="block text-sm font-medium text-gray-700 mb-1">Documento de Perguntas Frequentes (FAQ)</label>
+                                <label for="faqFileInput" class="custom-file-upload">
+                                    <i class="fas fa-file-upload mr-2"></i>Carregar FAQ (.txt, .csv, .pdf)
+                                </label>
+                                <input type="file" id="faqFileInput" name="faqFile" accept=".txt,.csv,.pdf">
+                                <p id="faqFileName" class="text-xs text-gray-500 mt-1">Nenhum arquivo selecionado.</p>
+                            </div>
+                            <div class="mb-4">
+                                <label for="websiteLink" class="block text-sm font-medium text-gray-700 mb-1">Link do Website ou Cardápio Online</label>
+                                <input type="url" id="websiteLink" name="websiteLink" class="form-input w-full p-3 border border-gray-300 rounded-lg shadow-sm" placeholder="https://seusite.com ou link do cardápio">
+                            </div>
+                            <div class="mb-6">
+                                <label for="additionalInstructions" class="block text-sm font-medium text-gray-700 mb-1">Instruções Adicionais para a IA</label>
+                                <textarea id="additionalInstructions" name="additionalInstructions" rows="4" class="form-textarea w-full p-3 border border-gray-300 rounded-lg shadow-sm" placeholder="Ex: Não oferecer descontos sem aprovação. Priorizar a venda do 'Combo Especial'. Horário de funcionamento: 9h às 22h."></textarea>
+                                <p class="text-xs text-gray-500 mt-1">Seja específico sobre o que o agente deve ou não fazer, informações cruciais, etc.</p>
+                            </div>
+                             <div class="flex justify-between">
+                                <button type="button" onclick="prevAgentStep()" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-arrow-left mr-2"></i>Anterior</button>
+                                <button type="button" onclick="nextAgentStep()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg cta-button">Próximo Passo <i class="fas fa-arrow-right ml-2"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Passo 4: Integração WhatsApp e n8n -->
+                        <div id="agentStep4" class="step-content">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Passo 4: Integração WhatsApp</h2>
+                            <div class="bg-green-50 p-6 rounded-lg border border-green-200 text-center">
+                                <i class="fab fa-whatsapp text-5xl text-green-500 mb-4"></i>
+                                <h3 class="text-xl font-semibold text-green-700 mb-2">Conecte seu WhatsApp</h3>
+                                <p class="text-sm text-gray-600 mb-4">Para ativar seu agente, precisaremos conectar ao seu número WhatsApp Business. Este processo é seguro e geralmente envolve a leitura de um QR Code (simulado aqui).</p>
+                                <div class="my-6 p-4 bg-white border rounded-md inline-block">
+                                    <img src="https://placehold.co/150x150/E2E8F0/4A5568?text=QR+Code+Simulado" alt="QR Code Simulado" class="mx-auto">
+                                </div>
+                                <p class="text-xs text-gray-500">Em um cenário real, você escanearia um QR Code com seu app WhatsApp Business.</p>
+                            </div>
+                             <div class="mt-6 bg-indigo-50 p-6 rounded-lg border border-indigo-200">
+                                <h3 class="text-xl font-semibold text-indigo-700 mb-2 flex items-center">
+                                    <img src="https://raw.githubusercontent.com/n8n-io/n8n-assets/main/logo/n8n-logo-square.png" alt="n8n Logo" class="w-6 h-6 mr-2">
+                                    Potencializado por n8n
+                                </h3>
+                                <p class="text-sm text-gray-600">Nossos agentes utilizam fluxos de automação personalizados no <strong class="font-semibold">n8n</strong>. Isso permite integrações avançadas, respostas condicionais complexas, e a capacidade do seu agente interagir com outras ferramentas e bancos de dados do seu negócio, tornando o atendimento verdadeiramente inteligente e adaptado.</p>
+                            </div>
+                             <div class="flex justify-between mt-8">
+                                <button type="button" onclick="prevAgentStep()" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-arrow-left mr-2"></i>Anterior</button>
+                                <button type="button" onclick="nextAgentStep()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg cta-button">Próximo Passo <i class="fas fa-arrow-right ml-2"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Passo 5: Revisão e Lançamento -->
+                        <div id="agentStep5" class="step-content text-center">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Passo 5: Revisão e Lançamento</h2>
+                            <i class="fas fa-rocket text-6xl text-purple-500 mb-6"></i>
+                            <p class="text-gray-600 mb-4">Seu agente IA está quase pronto para decolar! </p>
+                            <div id="agentSummary" class="text-left bg-gray-50 p-4 rounded-lg shadow mb-6 max-w-md mx-auto">
+                                <h4 class="font-semibold text-gray-700 mb-2 border-b pb-1">Resumo da Configuração:</h4>
+                                <!-- O resumo será preenchido por JS -->
+                            </div>
+                            <p class="text-gray-600 mb-8">Após criar sua conta e selecionar um plano, nossa equipe fará a configuração final e ativação do seu agente no WhatsApp, incluindo os fluxos n8n personalizados.</p>
+                            <div class="space-y-3 sm:space-y-0 sm:flex sm:justify-center sm:space-x-4">
+                                <button type="button" onclick="prevAgentStep()" class="w-full sm:w-auto bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-arrow-left mr-2"></i>Revisar</button>
+                                <button type="button" onclick="alert('Simulação: Agente enviado para teste!')" class="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-vial mr-2"></i>Testar Agente (Simulado)</button>
+                                <button type="button" onclick="location.href='index.html#planos'" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg cta-button"><i class="fas fa-paper-plane mr-2"></i>Lançar & Ver Planos</button>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-8">Este é um configurador para demonstração. O agente será efetivamente criado após a contratação de um plano.</p>
+                        </div>
+                    </form>
+                </div>
+                <!-- Coluna de Informações / Dicas -->
+                <div class="lg:col-span-1">
+                    <div id="agentInfoColumn" class="sticky top-24 bg-white p-6 rounded-lg shadow-lg">
+                        <!-- Conteúdo dinâmico baseado no passo -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-indigo-900 text-indigo-100 py-12 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <a href="index.html" class="text-xl font-bold text-white mb-4 inline-block">CardápioFácil IA</a>
+            <nav class="space-x-6 mb-4">
+                 <a href="sobre-nos.html" class="hover:text-white">Sobre Nós</a>
+                <a href="termos-de-servico.html" class="hover:text-white">Termos de Serviço</a>
+                <a href="politica-de-privacidade.html" class="hover:text-white">Política de Privacidade</a>
+                <a href="contato.html" class="hover:text-white">Contato</a>
+            </nav>
+            <div class="flex justify-center space-x-4 mb-4 text-indigo-200">
+                <a href="#" class="hover:text-white" aria-label="Facebook"><i class="fab fa-facebook-square fa-2x"></i></a>
+                <a href="#" class="hover:text-white" aria-label="Instagram"><i class="fab fa-instagram-square fa-2x"></i></a>
+                <a href="#" class="hover:text-white" aria-label="LinkedIn"><i class="fab fa-linkedin fa-2x"></i></a>
+            </div>
+            <p class="text-sm text-indigo-300">&copy; <span id="currentYearAgentPage"></span> CardápioFácil IA. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYearAgentPage').textContent = new Date().getFullYear();
+        let currentAgentStep = 1;
+        const totalAgentSteps = 5;
+        const agentData = {}; // Para armazenar dados do formulário
+
+        const faqFileInput = document.getElementById('faqFileInput');
+        const faqFileName = document.getElementById('faqFileName');
+
+        if (faqFileInput) {
+            faqFileInput.addEventListener('change', function() {
+                if (faqFileInput.files.length > 0) {
+                    faqFileName.textContent = faqFileInput.files[0].name;
+                } else {
+                    faqFileName.textContent = 'Nenhum arquivo selecionado.';
+                }
+            });
+        }
+        
+        const agentInfoContent = {
+            1: {
+                title: "Dicas para o Passo 1",
+                content: `<ul>
+                            <li><strong>Nome do Agente:</strong> Escolha um nome que reflita a identidade da sua marca.</li>
+                            <li><strong>Tipo de Negócio:</strong> Ajuda a IA a entender melhor seu contexto.</li>
+                            <li><strong>Objetivo Principal:</strong> Foca o treinamento da IA para a tarefa mais importante.</li>
+                         </ul>`
+            },
+            2: {
+                title: "Dicas para o Passo 2",
+                content: `<ul>
+                            <li><strong>Tom de Voz:</strong> Pense em como você normalmente conversa com seus clientes.</li>
+                            <li><strong>Mensagem de Saudação:</strong> Uma boa saudação pode aumentar o engajamento. Mantenha-a curta e convidativa.</li>
+                         </ul>`
+            },
+            3: {
+                title: "Dicas para o Passo 3",
+                content: `<ul>
+                            <li><strong>FAQ:</strong> Um bom documento de FAQ é crucial. Inclua perguntas e respostas claras e concisas.</li>
+                            <li><strong>Link do Site/Cardápio:</strong> Essencial para o agente poder direcionar ou buscar informações.</li>
+                            <li><strong>Instruções Adicionais:</strong> Detalhes como "não fazer X" ou "sempre oferecer Y" são muito úteis.</li>
+                         </ul>`
+            },
+            4: {
+                title: "Entendendo a Integração",
+                content: `<ul>
+                            <li><strong>WhatsApp Business API:</strong> Usamos a API oficial para garantir estabilidade e conformidade.</li>
+                            <li><strong>n8n:</strong> Esta poderosa ferramenta de automação nos permite criar lógicas complexas por trás do seu agente, como salvar pedidos em planilhas, enviar notificações para sua equipe, e muito mais!</li>
+                         </ul>`
+            },
+            5: {
+                title: "Próximos Passos",
+                content: `<ul>
+                            <li><strong>Teste Simulado:</strong> Interaja com uma versão básica do agente para ter uma ideia.</li>
+                            <li><strong>Escolha do Plano:</strong> Nossos planos definem o nível de personalização dos fluxos n8n, a capacidade de interpretação de áudio, e o suporte.</li>
+                            <li><strong>Lançamento:</strong> Após a contratação, nossa equipe entra em ação para finalizar e ativar seu agente!</li>
+                         </ul>`
+            }
+        };
+
+        function updateAgentInfoColumn() {
+            const infoColumn = document.getElementById('agentInfoColumn');
+            const data = agentInfoContent[currentAgentStep];
+            if (infoColumn && data) {
+                infoColumn.innerHTML = `<div class="info-box"><h4>${data.title}</h4>${data.content}</div>`;
+            }
+        }
+
+
+        function updateAgentStepIndicator() {
+            for (let i = 1; i <= totalAgentSteps; i++) {
+                const indicator = document.getElementById(`agentStepIndicator${i}`);
+                const stepContent = document.getElementById(`agentStep${i}`);
+                indicator.classList.remove('active', 'completed', 'bg-gray-300', 'text-gray-600', 'bg-purple-600', 'text-white');
+                
+                if (i < currentAgentStep) {
+                    indicator.classList.add('completed');
+                    indicator.innerHTML = '<i class="fas fa-check"></i>';
+                } else if (i === currentAgentStep) {
+                    indicator.classList.add('active');
+                    indicator.innerHTML = i;
+                } else {
+                    indicator.classList.add('bg-gray-300', 'text-gray-600');
+                    indicator.innerHTML = i;
+                }
+                stepContent.classList.toggle('active', i === currentAgentStep);
+            }
+            updateAgentInfoColumn(); // Atualiza a coluna de informações
+        }
+
+        function collectAgentData() {
+            agentData.name = document.getElementById('agentName')?.value;
+            agentData.businessType = document.getElementById('businessType')?.value;
+            agentData.goal = document.getElementById('agentGoal')?.value;
+            agentData.tone = document.getElementById('agentTone')?.value;
+            agentData.greeting = document.getElementById('greetingMessage')?.value;
+            agentData.faqFile = document.getElementById('faqFileInput')?.files[0]?.name || 'Nenhum';
+            agentData.website = document.getElementById('websiteLink')?.value;
+            agentData.instructions = document.getElementById('additionalInstructions')?.value;
+        }
+
+        function displayAgentSummary() {
+            const summaryContainer = document.getElementById('agentSummary');
+            if (summaryContainer) {
+                summaryContainer.innerHTML = `
+                    <h4 class="font-semibold text-gray-700 mb-2 border-b pb-1">Resumo da Configuração:</h4>
+                    <p class="text-sm text-gray-600"><strong>Nome:</strong> ${agentData.name || 'Não definido'}</p>
+                    <p class="text-sm text-gray-600"><strong>Tipo Negócio:</strong> ${agentData.businessType || 'Não definido'}</p>
+                    <p class="text-sm text-gray-600"><strong>Objetivo:</strong> ${agentData.goal || 'Não definido'}</p>
+                    <p class="text-sm text-gray-600"><strong>Tom:</strong> ${agentData.tone || 'Não definido'}</p>
+                    <p class="text-sm text-gray-600"><strong>Saudação:</strong> ${agentData.greeting ? (agentData.greeting.substring(0,30) + '...') : 'Nenhuma'}</p>
+                    <p class="text-sm text-gray-600"><strong>Arquivo FAQ:</strong> ${agentData.faqFile}</p>
+                    <p class="text-sm text-gray-600"><strong>Website/Cardápio:</strong> ${agentData.website || 'Nenhum'}</p>
+                    <p class="text-sm text-gray-600"><strong>Instruções Adic.:</strong> ${agentData.instructions ? (agentData.instructions.substring(0,30) + '...') : 'Nenhuma'}</p>
+                `;
+            }
+        }
+
+
+        function nextAgentStep() {
+            if (currentAgentStep < totalAgentSteps) {
+                 // Validação simples para o Passo 1
+                if (currentAgentStep === 1) {
+                    const agentNameInput = document.getElementById('agentName');
+                    if (!agentNameInput.value.trim()) {
+                        alert('Por favor, insira o nome do agente.');
+                        agentNameInput.focus();
+                        return;
+                    }
+                }
+                collectAgentData(); // Coleta dados antes de avançar ou no final
+                currentAgentStep++;
+                updateAgentStepIndicator();
+                if (currentAgentStep === totalAgentSteps) { // Se chegou no último passo (Revisão)
+                    displayAgentSummary();
+                }
+            }
+        }
+
+        function prevAgentStep() {
+            if (currentAgentStep > 1) {
+                collectAgentData();
+                currentAgentStep--;
+                updateAgentStepIndicator();
+                 if (currentAgentStep === totalAgentSteps -1) { // Se voltou para o passo antes da revisão
+                    // Pode limpar o summary se quiser ou deixar como está
+                }
+            }
+        }
+        // Inicializa
+        updateAgentStepIndicator();
+        updateAgentInfoColumn();
+    </script>
+
+</body>
+</html>

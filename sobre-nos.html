@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nós - CardapioFacil IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .cta-button {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        .section-hero-bg {
+            background-color: #f0e8ff; /* Um roxo bem claro, para diferenciar do hero da home mas manter o tema */
+        }
+        .team-member-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .team-member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            header .container,
+            footer .container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            nav {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                justify-content: flex-start;
+            }
+            .text-5xl {
+                font-size: 2.5rem; /* Ajustado para mobile */
+            }
+            .text-4xl {
+                font-size: 2rem; /* Ajustado para mobile */
+            }
+             .py-16,
+            .md\:py-24,
+            .py-20,
+            .md\:py-32 {
+                padding-top: 3rem; /* Ajustado para mobile */
+                padding-bottom: 3rem; /* Ajustado para mobile */
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">CardapioFácil IA</a>
+            <nav class="space-x-4">
+                <a href="index.html#recursos" class="text-gray-600 hover:text-indigo-600">Recursos</a>
+                <a href="index.html#passos" class="text-gray-600 hover:text-indigo-600">Como Funciona</a>
+                <a href="index.html#planos" class="text-gray-600 hover:text-indigo-600">Planos</a>
+                <a href="index.html#depoimentos" class="text-gray-600 hover:text-indigo-600">Depoimentos</a>
+                <a href="login-cadastro.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg cta-button">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Seção Principal Sobre Nós -->
+    <main>
+        <section class="section-hero-bg py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-700 mb-6">Sobre o CardapioFácil IA</h1>
+                <p class="text-lg md:text-xl text-gray-700 mb-10 max-w-3xl mx-auto">
+                    Nascemos da paixão por tecnologia e gastronomia, com o objetivo de revolucionar como restaurantes, bares e lanchonetes se conectam com seus clientes e gerenciam seu marketing.
+                </p>
+            </div>
+        </section>
+
+        <section id="nossa-historia" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-indigo-700 mb-4">Nossa Jornada</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        Percebemos que muitos estabelecimentos incríveis perdiam oportunidades por não terem uma presença online forte ou ferramentas para automatizar a comunicação. O CardapioFácil IA foi criado para preencher essa lacuna, oferecendo uma solução completa, inteligente e acessível para transformar cardápios em verdadeiras máquinas de venda e relacionamento.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 lg:gap-12 text-center">
+                    <div class="bg-indigo-50 p-8 rounded-xl shadow-lg">
+                        <div class="flex justify-center mb-4">
+                            <i class="fas fa-lightbulb text-5xl text-indigo-500"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-indigo-700 mb-3">Missão</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Empoderar negócios gastronômicos com tecnologia de ponta, simplificando a criação de cardápios digitais inteligentes e automatizando o marketing para impulsionar vendas e fidelizar clientes.
+                        </p>
+                    </div>
+                    <div class="bg-purple-50 p-8 rounded-xl shadow-lg">
+                        <div class="flex justify-center mb-4">
+                            <i class="fas fa-eye text-5xl text-purple-500"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-purple-700 mb-3">Visão</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Ser a plataforma líder em soluções de cardápio digital e automação de marketing para o setor alimentício na América Latina, reconhecida pela inovação e impacto positivo nos negócios de nossos clientes.
+                        </p>
+                    </div>
+                    <div class="bg-pink-50 p-8 rounded-xl shadow-lg">
+                        <div class="flex justify-center mb-4">
+                            <i class="fas fa-heart text-5xl text-pink-500"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-pink-700 mb-3">Valores</h3>
+                        <ul class="text-gray-600 leading-relaxed space-y-1">
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Inovação Contínua</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Foco no Cliente</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Simplicidade e Usabilidade</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Transparência</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Paixão por Resultados</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="nosso-time" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-indigo-700 mb-16">Conheça Nossa Equipe (Em Breve!)</h2>
+                <p class="text-center text-gray-600 mb-12 text-lg max-w-2xl mx-auto">
+                    Somos um time de desenvolvedores, designers e especialistas em marketing apaixonados por criar soluções que fazem a diferença. Estamos trabalhando para apresentar nossa equipe aqui.
+                </p>
+                <!-- Placeholder para cards da equipe -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+                    <div class="team-member-card bg-white p-6 rounded-lg shadow-lg text-center">
+                        <img src="https://placehold.co/150x150/E2E8F0/4A5568?text=Equipe" alt="Membro da Equipe 1" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-indigo-200">
+                        <h4 class="text-xl font-semibold text-gray-800">Nome do Membro 1</h4>
+                        <p class="text-indigo-600">Cargo/Especialidade</p>
+                        <p class="text-sm text-gray-500 mt-2">Uma breve descrição sobre o membro da equipe e suas contribuições.</p>
+                    </div>
+                    <div class="team-member-card bg-white p-6 rounded-lg shadow-lg text-center">
+                        <img src="https://placehold.co/150x150/E2E8F0/4A5568?text=Equipe" alt="Membro da Equipe 2" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-purple-200">
+                        <h4 class="text-xl font-semibold text-gray-800">Nome do Membro 2</h4>
+                        <p class="text-purple-600">Cargo/Especialidade</p>
+                        <p class="text-sm text-gray-500 mt-2">Uma breve descrição sobre o membro da equipe e suas contribuições.</p>
+                    </div>
+                    <div class="team-member-card bg-white p-6 rounded-lg shadow-lg text-center">
+                        <img src="https://placehold.co/150x150/E2E8F0/4A5568?text=Equipe" alt="Membro da Equipe 3" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-pink-200">
+                        <h4 class="text-xl font-semibold text-gray-800">Nome do Membro 3</h4>
+                        <p class="text-pink-600">Cargo/Especialidade</p>
+                        <p class="text-sm text-gray-500 mt-2">Uma breve descrição sobre o membro da equipe e suas contribuições.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-24 bg-indigo-700 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-6">Pronto para Transformar seu Negócio?</h2>
+                <p class="text-indigo-200 mb-8 text-lg max-w-xl mx-auto">Junte-se a centenas de estabelecimentos que já estão vendendo mais e encantando clientes com o CardapioFácil IA.</p>
+                <a href="index.html#planos" class="bg-white hover:bg-gray-100 text-indigo-700 font-bold py-3 px-8 rounded-lg text-lg shadow-md cta-button">
+                    Ver Planos e Começar Agora
+                </a>
+            </div>
+        </section>
+    </main>
+
+     <footer class="bg-indigo-900 text-indigo-100 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <a href="index.html" class="text-xl font-bold text-white mb-4 inline-block">CardápioFácil IA</a>
+            <div class="space-x-6 mb-4">
+                <a href="sobre-nos.html" class="hover:text-white">Sobre Nós</a>
+                <a href="termos-servicos.html" class="hover:text-white">Termos de Serviço</a>
+                <a href="politica-privacidade.html" class="hover:text-white">Política de Privacidade</a>
+                <a href="contato.html" class="hover:text-white">Contato</a>
+            </div>
+            <div class="flex justify-center space-x-4 mb-4 text-indigo-200">
+                <a href="#" class="hover:text-white" aria-label="Facebook">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                </a>
+                <a href="#" class="hover:text-white" aria-label="Twitter">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                </a>
+                <a href="#" class="hover:text-white" aria-label="Instagram">
+                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049 1.064.218 1.791.465 2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363.416-2.427.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.023.047 1.351.058 3.807.058h.468c2.456 0 2.784-.011 3.807-.058.975-.045 1.504.207 1.857-.344.467-.182-.8.398 1.15-.748.35-.35.566-.683.748-1.15.137.353.3-.882.344-1.857.047-1.023.058-1.351.058-3.807v-.468c0-2.456-.011-2.784-.058-3.807-.045-.975-.207-1.504-.344-1.857a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg>
+                </a>
+            </div>
+            <p class="text-sm text-indigo-300">&copy; <span id="currentYear"></span> CardápioFácil IA. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Define o ano atual no rodapé
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Rolagem suave para links âncora (caso haja algum link interno na página)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    const headerOffset = 70; // Altura aproximada do seu cabeçalho fixo
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

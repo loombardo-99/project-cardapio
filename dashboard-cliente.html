@@ -3,355 +3,500 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Dashboard - CardápioFácil</title>
+    <title>Painel de Administrador - CardapioFacil IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script> 
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F9FAFB; /* Cinza claro de fundo */
+            background-color: #f3f4f6; /* bg-gray-100 */
         }
-        .dashboard-layout {
-            display: flex;
-            min-height: 100vh;
+        /* Sidebar styles - Reverted to Indigo theme */
+        .admin-sidebar-v2 {
+            background-color: #3730a3; /* indigo-800 */
         }
-        .sidebar {
-            width: 260px;
-            background-color: #1F2937; /* Cinza escuro (gray-800) */
-            color: #D1D5DB; /* Cinza claro (gray-300) */
-            padding: 1.5rem; /* p-6 */
-            transition: width 0.3s ease;
-        }
-        .sidebar-header {
-            margin-bottom: 2rem; /* mb-8 */
-        }
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem; /* p-3 px-4 */
-            border-radius: 0.375rem; /* rounded-md */
-            transition: background-color 0.2s ease, color 0.2s ease;
-            color: #9CA3AF; /* gray-400 */
-        }
-        .sidebar-link:hover, .sidebar-link.active {
-            background-color: #374151; /* Cinza (gray-700) */
-            color: #FFFFFF; /* Branco */
-        }
-        .sidebar-link i {
-            margin-right: 0.75rem; /* mr-3 */
-            width: 1.25rem; /* w-5 */
-        }
-        .main-content {
-            flex-grow: 1;
-            padding: 2rem; /* p-8 */
-            overflow-y: auto;
-        }
-        .stat-card {
-            background-color: white;
-            padding: 1.5rem; /* p-6 */
-            border-radius: 0.5rem; /* rounded-lg */
+        .admin-sidebar-v2 a.active {
+            background-color: #4f46e5; /* indigo-600 */
+            color: white;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
         }
-        .qr-code-container {
-            width: 180px;
-            height: 180px;
-            background-color: #E5E7EB; /* Gray-200 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: #6B7280; /* Gray-500 */
-            margin: 0 auto; /* Centralizar */
+        .admin-sidebar-v2 a:not(.active):hover {
+            background-color: #4338ca; /* indigo-700 */
+            color: #e0e7ff; /* indigo-100 */
         }
-        .menu-link-display {
-            background-color: #F3F4F6; /* Gray-100 */
-            padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            word-break: break-all;
+        .admin-sidebar-v2 a {
+            transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+            font-weight: 500; /* medium */
+            color: #c7d2fe; /* indigo-200 */
+        }
+        .admin-sidebar-v2 .app-title { /* Specific class for app title */
+             color: white;
+        }
+        .admin-sidebar-v2 .app-title span { /* For the 'Facil' part */
+            color: #a5b4fc; /* indigo-300 */
         }
 
-        /* Mobile sidebar toggle */
-        .mobile-menu-button {
-            display: none; /* Oculto por defeito em ecrãs maiores */
+
+        .stat-card-v2 {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e5e7eb; /* gray-200 */
         }
-        @media (max-width: 768px) { /* md breakpoint */
-            .sidebar {
-                position: fixed;
-                left: -260px; /* Escondido fora do ecrã */
-                top: 0;
-                bottom: 0;
-                z-index: 100;
-                height: 100vh;
-            }
-            .sidebar.open {
-                left: 0;
-            }
-            .mobile-menu-button {
-                display: block;
-                position: fixed;
-                top: 1rem;
-                left: 1rem;
-                z-index: 110; /* Acima da sidebar quando fechada */
-                background-color: #1F2937;
-                color: white;
-                padding: 0.5rem;
-                border-radius: 0.375rem;
-            }
-            .main-content {
-                padding-top: 4rem; /* Espaço para o botão do menu móvel */
-            }
+        .stat-card-v2:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.07), 0 4px 8px -3px rgba(0,0,0,0.04);
         }
+        /* Tab styles - Reverted to Indigo theme */
+        .tab-button-v2 {
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+            font-weight: 500;
+        }
+        .tab-button-v2.active {
+            border-color: #6366f1; /* indigo-500 */
+            color: #4f46e5; /* indigo-600 */
+            background-color: #e0e7ff; /* indigo-100 */
+        }
+        .tab-button-v2:not(.active):hover {
+            background-color: #eef2ff; /* indigo-50 */
+            color: #4f46e5; /* indigo-600 */
+        }
+        .tab-content-v2 {
+            display: none;
+        }
+        .tab-content-v2.active {
+            display: block;
+        }
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0; /* slate-200 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a5b4fc; /* indigo-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #818cf8; /* indigo-400 */
+        }
+
+        /* Section headers and cards reverted to Indigo/Gray theme */
+        .section-header h1 {
+            color: #4338ca; /* indigo-700 */
+        }
+        .section-header p {
+            color: #6b7280; /* gray-500 */
+        }
+        .card-v2 {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            border: 1px solid #e5e7eb; /* gray-200 */
+        }
+        .stat-card-icon-bg-indigo { background-color: #e0e7ff; color: #4f46e5; }
+        .stat-card-icon-bg-green { background-color: #d1fae5; color: #059669; }
+        .stat-card-icon-bg-purple { background-color: #f3e8ff; color: #7c3aed; }
+        .stat-card-icon-bg-yellow { background-color: #fef9c3; color: #ca8a04; }
+
+        .quick-action-button-indigo { background-color: #4f46e5; } .quick-action-button-indigo:hover { background-color: #4338ca; }
+        .quick-action-button-green { background-color: #10b981; } .quick-action-button-green:hover { background-color: #059669; }
+        .quick-action-button-purple { background-color: #8b5cf6; } .quick-action-button-purple:hover { background-color: #7c3aed; }
+
+
     </style>
 </head>
-<body>
-    <div class="dashboard-layout">
-        <button id="mobileMenuBtn" class="mobile-menu-button md:hidden">
-            <i class="fas fa-bars text-xl"></i>
-        </button>
+<body class="flex h-screen overflow-hidden">
 
-        <aside id="sidebar" class="sidebar">
-            <div class="sidebar-header text-center">
-                <a href="index.html" class="text-3xl font-bold text-indigo-400">CardápioFácil</a>
-            </div>
-            <nav class="space-y-2">
-                <a href="#" id="navDashboard" class="sidebar-link active">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="adicionar-produtos.html" id="navEditMenu" class="sidebar-link">
-                    <i class="fas fa-edit"></i>
-                    <span>Editar Cardápio</span>
-                </a>
-                <a href="#" id="navViewMenu" class="sidebar-link" target="_blank">
-                    <i class="fas fa-eye"></i>
-                    <span>Ver Cardápio Online</span>
-                </a>
-                <a href="planos-pagamento.html" id="navSubscription" class="sidebar-link">
-                    <i class="fas fa-credit-card"></i>
-                    <span>Minha Assinatura</span>
-                </a>
-                <a href="#" id="navSettings" class="sidebar-link">
-                    <i class="fas fa-cog"></i>
-                    <span>Configurações</span>
-                </a>
-            </nav>
-            <div class="mt-auto pt-6">
-                 <button id="logoutButton" class="sidebar-link w-full !text-red-400 hover:!bg-red-700 hover:!text-white">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Sair</span>
+    <!-- Barra Lateral de Navegação -->
+    <aside class="admin-sidebar-v2 w-64 p-5 space-y-3 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out z-30 overflow-y-auto">
+        <a href="index.html" class="app-title text-2xl font-bold block mb-6 text-center hover:text-indigo-300 transition-colors">
+            Cardapio<span>Fácil</span> IA
+        </a>
+        
+        <nav class="space-y-1.5">
+            <a href="#visao-geral" data-section="visao-geral" class="flex items-center space-x-3 py-2.5 px-3 rounded-lg active">
+                <i class="fas fa-tachometer-alt fa-fw w-5 text-center"></i>
+                <span>Visão Geral</span>
+            </a>
+            <a href="#cardapios" data-section="cardapios" class="flex items-center space-x-3 py-2.5 px-3 rounded-lg">
+                <i class="fas fa-utensils fa-fw w-5 text-center"></i>
+                <span>Cardápios</span>
+            </a>
+            <a href="#agentes-ia" data-section="agentes-ia" class="flex items-center space-x-3 py-2.5 px-3 rounded-lg">
+                <i class="fas fa-robot fa-fw w-5 text-center"></i>
+                <span>Agentes IA</span>
+            </a>
+            <a href="#marketing" data-section="marketing" class="flex items-center space-x-3 py-2.5 px-3 rounded-lg">
+                <i class="fas fa-bullhorn fa-fw w-5 text-center"></i>
+                <span>Marketing</span>
+            </a>
+            <a href="#analises" data-section="analises" class="flex items-center space-x-3 py-2.5 px-3 rounded-lg">
+                <i class="fas fa-chart-pie fa-fw w-5 text-center"></i>
+                <span>Análises</span>
+            </a>
+            <a href="#configuracoes" data-section="configuracoes" class="flex items-center space-x-3 py-2.5 px-3 rounded-lg">
+                <i class="fas fa-cog fa-fw w-5 text-center"></i>
+                <span>Configurações</span>
+            </a>
+        </nav>
+
+        <div class="absolute bottom-5 left-0 right-0 px-5">
+             <a href="index.html" class="flex items-center space-x-3 py-2.5 px-3 rounded-lg text-indigo-200 hover:bg-red-600 hover:text-white transition-colors">
+                <i class="fas fa-sign-out-alt fa-fw w-5 text-center"></i>
+                <span>Sair</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="bg-white shadow-sm p-4 md:hidden sticky top-0 z-20 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <button id="mobileMenuButtonV2" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+                    <i class="fas fa-bars fa-lg"></i>
                 </button>
+                <span id="currentSectionTitleMobileV2" class="text-lg font-semibold text-indigo-700">Visão Geral</span>
+                 <a href="#configuracoes" data-section="configuracoes" class="mobile-header-nav-link text-gray-600 hover:text-indigo-600">
+                    <i class="fas fa-user-circle fa-lg"></i>
+                </a>
             </div>
-        </aside>
+        </header>
 
-        <main class="main-content">
-            <header class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-800">Bem-vindo(a) ao seu Dashboard, <span id="businessNameDisplay">Negócio</span>!</h1>
-                <p class="text-gray-600">Aqui você pode gerir o seu cardápio online.</p>
-            </header>
+        <main id="adminContentAreaV2" class="flex-1 p-6 md:p-8 lg:p-10 overflow-y-auto ml-0 md:ml-64">
+            <!-- Seção Visão Geral -->
+            <section id="content-visao-geral" class="admin-section-v2 active">
+                <div class="section-header mb-8">
+                    <h1 class="text-3xl font-bold">Bem-vindo de volta!</h1>
+                    <p class="text-md">Aqui está um resumo da atividade da sua plataforma.</p>
+                </div>
 
-            <section class="mb-8 p-6 bg-white rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Seu Cardápio Online</h2>
-                <div class="grid md:grid-cols-2 gap-6 items-center">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">Link do seu cardápio:</p>
-                        <div class="menu-link-display text-indigo-600 font-medium mb-3">
-                            <a id="publicMenuLink" href="#" target="_blank">https://cardapiofacil.app/seu-negocio</a>
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card-v2 card-v2 p-6 flex items-center space-x-4">
+                        <div class="p-3 rounded-full stat-card-icon-bg-indigo">
+                           <i class="fas fa-eye fa-xl"></i>
                         </div>
-                        <button id="copyMenuLinkBtn" class="text-sm bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md transition-colors">
-                            <i class="fas fa-copy mr-2"></i>Copiar Link
-                        </button>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-sm text-gray-600 mb-2">QR Code:</p>
-                        <div id="qrCodeDashboard" class="qr-code-container">
-                            <span>QR Code (Gerar)</span>
+                        <div>
+                            <p class="text-sm text-gray-500">Visualizações (Mês)</p>
+                            <p class="text-2xl font-bold text-gray-800">1,234</p>
                         </div>
-                        <button id="downloadQRBtn" class="mt-3 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-md transition-colors">
-                            <i class="fas fa-download mr-2"></i>Baixar QR Code
-                        </button>
+                    </div>
+                    <div class="stat-card-v2 card-v2 p-6 flex items-center space-x-4">
+                         <div class="p-3 rounded-full stat-card-icon-bg-green">
+                            <i class="fas fa-shopping-cart fa-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Pedidos (Hoje)</p>
+                            <p class="text-2xl font-bold text-gray-800">56</p>
+                        </div>
+                    </div>
+                    <div class="stat-card-v2 card-v2 p-6 flex items-center space-x-4">
+                        <div class="p-3 rounded-full stat-card-icon-bg-purple">
+                            <i class="fab fa-whatsapp fa-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Interações IA (Hoje)</p>
+                            <p class="text-2xl font-bold text-gray-800">120</p>
+                        </div>
+                    </div>
+                    <div class="stat-card-v2 card-v2 p-6 flex items-center space-x-4">
+                        <div class="p-3 rounded-full stat-card-icon-bg-yellow">
+                            <i class="fas fa-star fa-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Avaliação Média</p>
+                            <p class="text-2xl font-bold text-gray-800">4.8 <span class="text-sm font-normal">/ 5</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="lg:col-span-2 card-v2 p-6">
+                        <h2 class="text-xl font-semibold text-gray-700 mb-1">Desempenho de Vendas</h2>
+                        <p class="text-sm text-gray-500 mb-4">Últimos 7 dias</p>
+                        <div class="relative h-80"> 
+                            <canvas id="salesChartV2"></canvas>
+                        </div>
+                    </div>
+                    <div class="card-v2 p-6">
+                        <h2 class="text-xl font-semibold text-gray-700 mb-4">Atividade Recente</h2>
+                        <ul class="space-y-4 max-h-80 overflow-y-auto pr-2">
+                            <li class="text-sm text-gray-600 flex items-start"><i class="fas fa-bell text-indigo-500 mr-3 mt-1 fa-fw"></i><span>Novo pedido <strong class="text-gray-700">#1025</strong> recebido. <span class="block text-gray-400 text-xs">2 min atrás</span></span></li>
+                            <li class="text-sm text-gray-600 flex items-start"><i class="fas fa-comment-dots text-purple-500 mr-3 mt-1 fa-fw"></i><span>Agente IA respondeu a 15 novas conversas. <span class="block text-gray-400 text-xs">10 min atrás</span></span></li>
+                            <li class="text-sm text-gray-600 flex items-start"><i class="fas fa-edit text-green-500 mr-3 mt-1 fa-fw"></i><span>Cardápio "Almoço Executivo" atualizado. <span class="block text-gray-400 text-xs">1 hora atrás</span></span></li>
+                            <li class="text-sm text-gray-600 flex items-start"><i class="fas fa-bullhorn text-yellow-500 mr-3 mt-1 fa-fw"></i><span>Promoção "Happy Hour" agendada para amanhã.</span></li>
+                             <li class="text-sm text-gray-600 flex items-start"><i class="fas fa-user-plus text-red-500 mr-3 mt-1 fa-fw"></i><span>Novo cliente <strong class="text-gray-700">Ana Silva</strong> registrou-se. <span class="block text-gray-400 text-xs">3 horas atrás</span></span></li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="card-v2 p-6">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Ações Rápidas</h2>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#cardapios" data-section-target="cardapios" class="quick-action-button-v2 quick-action-button-indigo text-white font-semibold py-2.5 px-5 rounded-lg flex items-center shadow hover:shadow-md transition-all">
+                            <i class="fas fa-edit mr-2"></i>Editar Cardápio
+                        </a>
+                         <a href="#marketing" data-section-target="marketing" class="quick-action-button-v2 quick-action-button-green text-white font-semibold py-2.5 px-5 rounded-lg flex items-center shadow hover:shadow-md transition-all">
+                            <i class="fas fa-plus-circle mr-2"></i>Nova Promoção
+                        </a>
+                        <a href="#agentes-ia" data-section-target="agentes-ia" class="quick-action-button-v2 quick-action-button-purple text-white font-semibold py-2.5 px-5 rounded-lg flex items-center shadow hover:shadow-md transition-all">
+                            <i class="fas fa-cogs mr-2"></i>Configurar Agente
+                        </a>
                     </div>
                 </div>
             </section>
 
-            <section class="mb-8">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Visão Geral</h2>
-                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="stat-card">
-                        <h3 class="text-gray-500 text-sm font-medium mb-1">Visualizações Hoje</h3>
-                        <p class="text-3xl font-bold text-gray-800">123</p>
-                        <p class="text-xs text-green-500 mt-1">+5% desde ontem</p>
+            <section id="content-cardapios" class="admin-section-v2 hidden">
+                 <div class="section-header mb-8">
+                    <h1 class="text-3xl font-bold">Meus Cardápios</h1>
+                    <p class="text-md">Crie, edite e gira os seus cardápios online.</p>
+                </div>
+                <div class="card-v2 p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <h2 class="text-xl font-semibold text-gray-700">Todos os Cardápios</h2>
+                        <a href="criador-cardapio-interativo.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-5 rounded-lg cta-button shadow hover:shadow-md transition-all">
+                            <i class="fas fa-plus mr-2"></i>Criar Novo Cardápio
+                        </a>
                     </div>
-                    <div class="stat-card">
-                        <h3 class="text-gray-500 text-sm font-medium mb-1">Total de Itens</h3>
-                        <p id="totalItemsStat" class="text-3xl font-bold text-gray-800">0</p>
-                        <p class="text-xs text-gray-400 mt-1">No seu cardápio ativo</p>
+                     <p class="text-center text-gray-500 py-12">Conteúdo de gestão de cardápios aqui...</p>
+                </div>
+            </section>
+
+            <section id="content-agentes-ia" class="admin-section-v2 hidden">
+                <div class="section-header mb-8">
+                    <h1 class="text-3xl font-bold ">Agentes de IA (WhatsApp)</h1>
+                    <p class="text-md">Configure e monitorize os seus assistentes virtuais.</p>
+                </div>
+                 <div class="card-v2 p-6">
+                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <h2 class="text-xl font-semibold text-gray-700">Configuração do Agente Principal</h2>
+                        <a href="criacao-agentes.html" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-5 rounded-lg cta-button shadow hover:shadow-md transition-all">
+                            <i class="fas fa-edit mr-2"></i>Editar Configurações
+                        </a>
                     </div>
-                    <div class="stat-card">
-                        <h3 class="text-gray-500 text-sm font-medium mb-1">Plano Atual</h3>
-                        <p id="currentPlanStat" class="text-2xl font-bold text-indigo-600">Básico</p>
-                        <a href="planos-pagamento.html" class="text-xs text-indigo-500 hover:underline mt-1 block">Ver/Mudar plano</a>
+                    <p class="text-center text-gray-500 py-12">Detalhes e histórico do agente IA aqui...</p>
+                 </div>
+            </section>
+
+            <section id="content-marketing" class="admin-section-v2 hidden">
+                 <div class="section-header mb-8">
+                    <h1 class="text-3xl font-bold">Marketing e Automações</h1>
+                    <p class="text-md">Crie campanhas, promoções e automatize o contacto com clientes.</p>
+                </div>
+                <div class="card-v2 p-6">
+                    <div class="mb-6 border-b border-gray-200 pb-3">
+                        <button class="tab-button-v2 active py-2.5 px-5 text-sm text-gray-600 border-b-2 border-transparent rounded-t-md" data-tab="promocoes">Promoções</button>
+                        <button class="tab-button-v2 py-2.5 px-5 text-sm text-gray-600 border-b-2 border-transparent rounded-t-md" data-tab="disparos">Disparos</button>
                     </div>
-                     <div class="stat-card">
-                        <h3 class="text-gray-500 text-sm font-medium mb-1">Status do Cardápio</h3>
-                        <p id="menuStatusStat" class="text-2xl font-bold text-green-500">Publicado</p>
-                        <p class="text-xs text-gray-400 mt-1">Seu cardápio está online!</p>
+                    <div id="tab-promocoes" class="tab-content-v2 active">
+                         <p class="text-center text-gray-500 py-12">Gestão de promoções aqui...</p>
+                    </div>
+                     <div id="tab-disparos" class="tab-content-v2">
+                        <p class="text-center text-gray-500 py-12">Ferramentas de disparo de mensagens aqui...</p>
                     </div>
                 </div>
             </section>
 
-            <section>
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Ações Rápidas</h2>
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <a href="adicionar-produtos.html" class="block p-6 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg shadow-md transition-colors text-center">
-                        <i class="fas fa-plus-circle text-3xl mb-2"></i>
-                        <p class="font-semibold">Adicionar Novo Produto</p>
-                    </a>
-                    <a href="adicionar-produtos.html" class="block p-6 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition-colors text-center">
-                        <i class="fas fa-list-alt text-3xl mb-2"></i>
-                        <p class="font-semibold">Gerir Categorias</p>
-                    </a>
-                    <a href="#" id="shareMenuAction" class="block p-6 bg-teal-500 hover:bg-teal-600 text-white rounded-lg shadow-md transition-colors text-center">
-                        <i class="fas fa-share-alt text-3xl mb-2"></i>
-                        <p class="font-semibold">Partilhar Cardápio</p>
-                    </a>
+            <section id="content-analises" class="admin-section-v2 hidden">
+                 <div class="section-header mb-8">
+                    <h1 class="text-3xl font-bold">Análises Detalhadas</h1>
+                    <p class="text-md">Métricas e relatórios sobre o desempenho da sua plataforma.</p>
+                </div>
+                <div class="card-v2 p-6">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-1">Desempenho Geral</h2>
+                    <p class="text-sm text-gray-500 mb-4">Comparativo mensal</p>
+                    <div class="relative h-96"> 
+                        <canvas id="detailedAnalyticsChartV2"></canvas>
+                    </div>
                 </div>
             </section>
 
+            <section id="content-configuracoes" class="admin-section-v2 hidden">
+                <div class="section-header mb-8">
+                    <h1 class="text-3xl font-bold">Configurações</h1>
+                    <p class="text-md">Gira as definições da sua conta e preferências.</p>
+                </div>
+                <div class="card-v2 p-6">
+                     <div class="mb-6 border-b border-gray-200 pb-3">
+                        <button class="tab-button-v2 active py-2.5 px-5 text-sm text-gray-600 border-b-2 border-transparent rounded-t-md" data-tab="perfil">Perfil</button>
+                        <button class="tab-button-v2 py-2.5 px-5 text-sm text-gray-600 border-b-2 border-transparent rounded-t-md" data-tab="plano">Plano</button>
+                         <button class="tab-button-v2 py-2.5 px-5 text-sm text-gray-600 border-b-2 border-transparent rounded-t-md" data-tab="integracoes">Integrações</button>
+                    </div>
+                     <div id="tab-perfil" class="tab-content-v2 active">
+                         <p class="text-center text-gray-500 py-12">Configurações de perfil do negócio aqui...</p>
+                    </div>
+                    <div id="tab-plano" class="tab-content-v2">
+                        <p class="text-center text-gray-500 py-12">Detalhes do plano e faturação aqui...</p>
+                    </div>
+                    <div id="tab-integracoes" class="tab-content-v2">
+                        <p class="text-center text-gray-500 py-12">Gestão de integrações (ex: n8n, gateways de pagamento) aqui...</p>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
     <script>
-        const businessNameDisplay = document.getElementById('businessNameDisplay');
-        const publicMenuLink = document.getElementById('publicMenuLink');
-        const navViewMenu = document.getElementById('navViewMenu');
-        const copyMenuLinkBtn = document.getElementById('copyMenuLinkBtn');
-        const qrCodeDashboard = document.getElementById('qrCodeDashboard');
-        const downloadQRBtn = document.getElementById('downloadQRBtn');
-        const totalItemsStat = document.getElementById('totalItemsStat');
-        const currentPlanStat = document.getElementById('currentPlanStat');
-        const menuStatusStat = document.getElementById('menuStatusStat');
-        const logoutButton = document.getElementById('logoutButton');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const sidebar = document.getElementById('sidebar');
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarLinksV2 = document.querySelectorAll('.admin-sidebar-v2 a[data-section]');
+            const contentSectionsV2 = document.querySelectorAll('.admin-section-v2');
+            const mobileMenuButtonV2 = document.getElementById('mobileMenuButtonV2');
+            const sidebarV2 = document.querySelector('.admin-sidebar-v2');
+            const adminContentAreaV2 = document.getElementById('adminContentAreaV2');
+            const quickActionButtonsV2 = document.querySelectorAll('.quick-action-button-v2'); 
+            const currentSectionTitleMobileV2 = document.getElementById('currentSectionTitleMobileV2');
+            const mobileHeaderNavLinks = document.querySelectorAll('.mobile-header-nav-link');
 
-        let appData = {
-            businessName: "Seu Negócio",
-            menuSlug: "seu-negocio",
-            subscriptionPlan: "Não Assinado",
-            isMenuPublished: false,
-            totalProducts: 0
-        };
 
-        function loadDashboardData() {
-            // Carregar dados do localStorage
-            const storedQuizData = localStorage.getItem('quizDataGlobal');
-            const storedSubscriptionPlan = localStorage.getItem('userSubscriptionPlan');
-            const storedIsMenuPublished = localStorage.getItem('isMenuPublished');
-            const storedProducts = localStorage.getItem('cardapioProducts');
+            let salesChartInstanceV2 = null;
+            let detailedAnalyticsChartInstanceV2 = null;
 
-            if (storedQuizData) {
-                const quizData = JSON.parse(storedQuizData);
-                appData.businessName = quizData.negocioNome || "Seu Negócio";
-                appData.menuSlug = (quizData.negocioNome || "seu-negocio").toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-            }
-            if (storedSubscriptionPlan) {
-                appData.subscriptionPlan = storedSubscriptionPlan;
-            }
-            if (storedIsMenuPublished === 'true') { // localStorage guarda strings
-                appData.isMenuPublished = true;
-            }
-            if (storedProducts) {
-                appData.totalProducts = JSON.parse(storedProducts).length;
-            }
-
-            // Atualizar UI
-            businessNameDisplay.textContent = appData.businessName;
-            const menuLink = `https://cardapiofacil.app/${appData.menuSlug}`; // Simulação de link
-            publicMenuLink.href = menuLink;
-            publicMenuLink.textContent = menuLink;
-            navViewMenu.href = menuLink;
-
-            totalItemsStat.textContent = appData.totalProducts;
-            currentPlanStat.textContent = appData.subscriptionPlan;
-
-            if (appData.isMenuPublished) {
-                menuStatusStat.textContent = "Publicado";
-                menuStatusStat.className = "text-2xl font-bold text-green-500"; // Verde para publicado
-                generateQRCode(menuLink);
-            } else {
-                menuStatusStat.textContent = "Não Publicado";
-                menuStatusStat.className = "text-2xl font-bold text-red-500"; // Vermelho para não publicado
-                 qrCodeDashboard.innerHTML = `<span>Publique para gerar</span>`;
-                 downloadQRBtn.disabled = true;
-            }
-        }
-
-        function generateQRCode(link) {
-            // Usar uma API externa para gerar o QR Code (ex: goqr.me ou qrserver.com)
-            // Por simplicidade, vamos apenas mostrar um placeholder com o link.
-            // Numa aplicação real, você faria uma chamada de API ou usaria uma biblioteca JS.
-            const qrAPI = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(link)}&format=png&bgcolor=ffffff`;
-            qrCodeDashboard.innerHTML = `<img src="${qrAPI}" alt="QR Code do Cardápio" class="rounded-md">`;
-            downloadQRBtn.disabled = false;
-            downloadQRBtn.onclick = () => {
-                // Criar um link temporário para download
-                const a = document.createElement('a');
-                a.href = qrAPI;
-                a.download = `qrcode-${appData.menuSlug}.png`; // Nome do ficheiro
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            };
-        }
-        
-        copyMenuLinkBtn.addEventListener('click', function() {
-            const linkToCopy = publicMenuLink.href;
-            navigator.clipboard.writeText(linkToCopy).then(function() {
-                alert('Link do cardápio copiado para a área de transferência!');
-            }, function(err) {
-                alert('Erro ao copiar o link. Tente manualmente.');
-                console.error('Erro ao copiar: ', err);
-            });
-        });
-
-        logoutButton.addEventListener('click', function() {
-            if (confirm('Tem a certeza que deseja sair?')) {
-                // Limpar dados de sessão/login (localStorage neste exemplo)
-                localStorage.removeItem('quizDataGlobal');
-                localStorage.removeItem('userSubscriptionPlan');
-                localStorage.removeItem('isMenuPublished');
-                localStorage.removeItem('cardapioCategories');
-                localStorage.removeItem('cardapioProducts');
-                localStorage.removeItem('selectedLayoutIdGlobal');
-                // Redirecionar para a página inicial
-                window.location.href = 'index.html';
-            }
-        });
-
-        mobileMenuBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('open');
-        });
-        
-        // Fechar sidebar ao clicar num link (para mobile)
-        sidebar.querySelectorAll('.sidebar-link').forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
-                    if(this.id !== 'logoutButton'){ // Não fechar se for logout para o confirm aparecer
-                         sidebar.classList.remove('open');
-                    }
+            function initSalesChartV2() {
+                const salesCtx = document.getElementById('salesChartV2');
+                if (salesCtx && !salesChartInstanceV2) { 
+                    salesChartInstanceV2 = new Chart(salesCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                            datasets: [{
+                                label: 'Vendas (R$)',
+                                data: [120, 190, 300, 500, 210, 330, 450],
+                                borderColor: '#4f46e5', // Indigo-600 (reverted)
+                                backgroundColor: 'rgba(79, 70, 229, 0.1)', // Indigo-600 com alpha (reverted)
+                                tension: 0.3,
+                                fill: true,
+                                pointBackgroundColor: '#4f46e5',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#4f46e5'
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                    });
+                } else if (salesChartInstanceV2) {
+                    salesChartInstanceV2.resize();
                 }
-                // Lógica para destacar link ativo (opcional)
-                sidebar.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
+            }
+
+            function initDetailedAnalyticsChartV2() {
+                const detailedAnalyticsCtx = document.getElementById('detailedAnalyticsChartV2');
+                if (detailedAnalyticsCtx && !detailedAnalyticsChartInstanceV2) { 
+                    detailedAnalyticsChartInstanceV2 = new Chart(detailedAnalyticsCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                            datasets: [{
+                                label: 'Visualizações Cardápio',
+                                data: [500, 750, 600, 800, 700, 900],
+                                backgroundColor: 'rgba(79, 70, 229, 0.7)', // Indigo-600 com alpha (reverted)
+                                borderColor: 'rgba(79, 70, 229, 1)',
+                                borderWidth: 1
+                            }, {
+                                label: 'Pedidos Concluídos',
+                                data: [50, 75, 60, 80, 70, 90],
+                                 backgroundColor: 'rgba(16, 185, 129, 0.7)', // Emerald-500 (mantido, bom contraste)
+                                 borderColor: 'rgba(16, 185, 129, 1)',
+                                 borderWidth: 1
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                    });
+                } else if (detailedAnalyticsChartInstanceV2) {
+                    detailedAnalyticsChartInstanceV2.resize();
+                }
+            }
+
+            function setActiveSectionV2(sectionId) {
+                contentSectionsV2.forEach(section => {
+                    const isActive = section.id === `content-${sectionId}`;
+                    section.classList.toggle('active', isActive);
+                    section.classList.toggle('hidden', !isActive);
+                });
+                let activeLinkText = 'Painel Admin';
+                sidebarLinksV2.forEach(link => {
+                    const isActiveLink = link.dataset.section === sectionId;
+                    link.classList.toggle('active', isActiveLink);
+                    if(isActiveLink) {
+                        activeLinkText = link.querySelector('span').textContent;
+                    }
+                });
+                
+                if(currentSectionTitleMobileV2) {
+                    currentSectionTitleMobileV2.textContent = activeLinkText;
+                }
+                
+                requestAnimationFrame(() => {
+                    if (sectionId === 'visao-geral') {
+                        initSalesChartV2();
+                    } else if (sectionId === 'analises') {
+                        initDetailedAnalyticsChartV2();
+                    }
+                });
+
+                if (window.innerWidth < 768) { 
+                    sidebarV2.classList.add('-translate-x-full');
+                }
+                adminContentAreaV2.scrollTop = 0;
+            }
+            
+            sidebarLinksV2.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const sectionId = this.dataset.section;
+                    setActiveSectionV2(sectionId);
+                });
             });
+            
+            quickActionButtonsV2.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetSectionId = this.dataset.sectionTarget;
+                    if (targetSectionId) {
+                        setActiveSectionV2(targetSectionId);
+                    }
+                });
+            });
+
+            mobileHeaderNavLinks.forEach(link => {
+                 link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const sectionId = this.dataset.section;
+                    if (sectionId) {
+                         setActiveSectionV2(sectionId);
+                    }
+                });
+            });
+
+
+            contentSectionsV2.forEach(container => {
+                const tabButtonsInContainer = container.querySelectorAll('.tab-button-v2');
+                const tabContentsInContainer = container.querySelectorAll('.tab-content-v2');
+
+                tabButtonsInContainer.forEach(button => {
+                    button.addEventListener('click', function() {
+                        tabButtonsInContainer.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+
+                        const tabId = this.dataset.tab;
+                        tabContentsInContainer.forEach(content => {
+                            content.classList.toggle('active', content.id === `tab-${tabId}`);
+                            content.classList.toggle('hidden', content.id !== `tab-${tabId}`);
+                        });
+                    });
+                });
+            });
+
+            if (mobileMenuButtonV2 && sidebarV2) {
+                mobileMenuButtonV2.addEventListener('click', function() {
+                    sidebarV2.classList.toggle('-translate-x-full');
+                });
+            }
+            
+            setActiveSectionV2('visao-geral');
         });
-
-
-        // Inicialização
-        loadDashboardData();
-
     </script>
 </body>
 </html>
